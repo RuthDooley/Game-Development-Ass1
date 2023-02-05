@@ -141,24 +141,20 @@ public class MainWindow {
 
 	public static void main(String[] args) {
 		MainWindow hello = new MainWindow();  //sets up environment 
-		
-		while(true){ //Need some sort of waiting
+		gameloop(levelNumberSelected);
+	} 
+
+	//Basic Model-View-Controller pattern 
+	private static void gameloop(int levelNumberSelected) { 
+
+
+		while(true){
 			//Need to keep this in
 			int TimeBetweenFrames =  1000 / TargetFPS;
 			long FrameCheck = System.currentTimeMillis() + (long) TimeBetweenFrames; 
 		 	while (FrameCheck > System.currentTimeMillis()){} 
 			
 			
-			if(startGame)
-				gameloop(levelNumberSelected);
-			  
-		}
-		
-	} 
-
-	//Basic Model-View-Controller pattern 
-	private static void gameloop(int levelNumberSelected) { 
-
 			// model update   
 			gameworld.gamelogic();
 			// view update 
@@ -172,10 +168,23 @@ public class MainWindow {
 			if (gameworld.getScore() == 4){
 				startGame = false;
 				levelNumberSelected = 4;
-				return;
+				break;
 			}
+			  
+		}
+
+		if (!startGame){
+			levelSelectorWindow();
+		}
+
+	
+		//wait until a selection has been made. This needs to be worked on
+		if (startGame){
+			gameworld = null;
+			canvas = null;
+			gameloop(levelNumberSelected);
+		}
 		
 	}
-
 }
 
