@@ -52,10 +52,10 @@ public class MainWindow {
 	private   JLabel BackgroundImageForStartMenu ;
 	  
 	public MainWindow() {
-		frame.setSize(1000, 1000);  // you can customise this later and adapt it to change on size.  
+		frame.setSize(2000, 1500);  // you can customise this later and adapt it to change on size.  
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //If exit // you can modify with your way of quitting , just is a template.
 		frame.setLayout(null);
-				
+
 		//All button handelling
 		JButton startMenuButton = new JButton("Start Game");  // start button 
 		startMenuButton.setBackground(Color.RED);
@@ -65,11 +65,11 @@ public class MainWindow {
 		frame.setVisible(true);   
 
 		startMenuButton.addActionListener(new ActionListener(){ 
-			@Override
-			public void actionPerformed(ActionEvent e) { 
-				//Main menu to level selector menu
-				levelSelectorWindow();
-			}});  
+		@Override
+		public void actionPerformed(ActionEvent e) { 
+			//Main menu to level selector menu
+			levelSelectorWindow();
+		}});  
 	}
 
 	public static int levelNumberSelected = 0; 
@@ -84,13 +84,15 @@ public class MainWindow {
 		frame.add(levelSelect1);  
 
 		levelSelect1.addActionListener(new ActionListener(){ 
-			@Override
-			public void actionPerformed(ActionEvent e) { 
-				levelNumberSelected = 1;
-				startGame = true;
+		@Override
+		public void actionPerformed(ActionEvent e) { 
+			levelNumberSelected = 1;
+			startGame = true;
 
-				gameSetupCanvas();
-			}});  
+			Model.gameDesignSetup(1);
+
+			gameSetupCanvas();
+		}});  
 
 		JButton levelSelect2 = new JButton("Start Game");  // start button 
 		levelSelect2.setBackground(Color.BLACK);
@@ -98,13 +100,15 @@ public class MainWindow {
 		levelSelect2.setBounds(400, 300, 200, 50);  
 		frame.add(levelSelect2);  
 		levelSelect2.addActionListener(new ActionListener(){ 
-			@Override
-			public void actionPerformed(ActionEvent e) { 
-				levelNumberSelected = 2;
-				startGame = true;
+		@Override
+		public void actionPerformed(ActionEvent e) { 
+			levelNumberSelected = 2;
+			startGame = true;
 
-				gameSetupCanvas();
-			}}); 
+			Model.gameDesignSetup(2);
+
+			gameSetupCanvas();
+		}}); 
 
 		JButton levelSelect3 = new JButton("Start Game");  // start button 
 		levelSelect3.setBackground(Color.BLACK);
@@ -112,13 +116,15 @@ public class MainWindow {
 		levelSelect3.setBounds(400, 400, 200, 50);  
 		frame.add(levelSelect3);  
 		levelSelect3.addActionListener(new ActionListener(){ 
-			@Override
-			public void actionPerformed(ActionEvent e) { 
-				levelNumberSelected = 3;
-				startGame = true;
+		@Override
+		public void actionPerformed(ActionEvent e) { 
+			levelNumberSelected = 3;
+			startGame = true;
 
-				gameSetupCanvas();
-			}}); 
+			Model.gameDesignSetup(3);
+
+			gameSetupCanvas();
+		}}); 
 	}
 
 	//Remove all of the children of jframe and all of the elements 
@@ -129,9 +135,10 @@ public class MainWindow {
 
 	//Setting up the elements for the game steup canvas as shown in template
 	public static void gameSetupCanvas (){
+		System.out.println("Set up canvas " + levelNumberSelected);
 		repaintJFrame();
 
-		canvas.setBounds(0, 0, 1000, 1000); 
+		canvas.setBounds(0, 0, 2000, 1500); 
 		canvas.setBackground(new Color(255,255,255)); //white background  replaced by Space background but if you remove the background method this will draw a white screen 
 		frame.add(canvas);  
 
@@ -140,29 +147,22 @@ public class MainWindow {
 	}
 
 	public static void main(String[] args) {
+		// Model.printGrid();
 		MainWindow hello = new MainWindow();  //sets up environment 
 		gameloop(levelNumberSelected);
+
 	} 
 
 	//Basic Model-View-Controller pattern 
 	private static void gameloop(int levelNumberSelected) { 
-
-
 		while(true){
 			//Need to keep this in
 			int TimeBetweenFrames =  1000 / TargetFPS;
 			long FrameCheck = System.currentTimeMillis() + (long) TimeBetweenFrames; 
 		 	while (FrameCheck > System.currentTimeMillis()){} 
 			
-			
-			// model update   
 			gameworld.gamelogic();
-			// view update 
-			
 			canvas.updateview(); 
-			
-			// Both these calls could be setup as  a thread but we want to simplify the game logic for you.  
-			//score update  
 			frame.setTitle("Score =  "+ gameworld.getScore()); 
 
 			if (gameworld.getScore() == 4){

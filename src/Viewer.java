@@ -16,6 +16,10 @@ import javax.swing.Timer;
 
 import util.GameObject;
 
+//For the grid drawing
+import java.awt.Dimension;
+import javax.swing.*;
+
 
 /*
  * Created by Abraham Campbell on 15/01/2020.
@@ -44,6 +48,7 @@ SOFTWARE.
  * Credits: Kelly Charles (2020)
  */ 
 public class Viewer extends JPanel {
+	private int spaceshipDirection=0;
 	private long CurrentAnimationTime= 0; 
 	
 	Model gameworld =new Model(); 
@@ -81,7 +86,6 @@ public class Viewer extends JPanel {
 		super.paintComponent(g);
 		CurrentAnimationTime++; // runs animation time step 
 		
-		
 		//Draw player Game Object 
 		int x = (int) gameworld.getPlayer().getCentre().getX();
 		int y = (int) gameworld.getPlayer().getCentre().getY();
@@ -91,6 +95,8 @@ public class Viewer extends JPanel {
 		
 		//Draw background 
 		drawBackground(g);
+
+		drawGrid(g);
 		
 		//Draw player
 		drawPlayer(x, y, width, height, texture,g);
@@ -106,6 +112,12 @@ public class Viewer extends JPanel {
 		gameworld.getEnemies().forEach((temp) -> 
 		{
 			drawEnemies((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(), (int) temp.getHeight(), temp.getTexture(),g);	 
+		 
+	    }); 
+
+		gameworld.getLettuceBins().forEach((temp) -> 
+		{
+			drawLettuce((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 32, 32, temp.getTexture(), g);	 
 		 
 	    }); 
 	}
@@ -131,7 +143,7 @@ public class Viewer extends JPanel {
 		File TextureToLoad = new File("res/spacebackground.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
 		try {
 			Image myImage = ImageIO.read(TextureToLoad); 
-			 g.drawImage(myImage, 0,0, 1000, 1000, 0 , 0, 1000, 1000, null); 
+			 g.drawImage(myImage, 0,0, 12000, 12000, 0 , 0, 12000, 12000, null); 
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -174,7 +186,31 @@ public class Viewer extends JPanel {
 		// background image from https://www.needpix.com/photo/download/677346/space-stars-nebula-background-galaxy-universe-free-pictures-free-photos-free-images
 		
 	}
-		 
-	 
 
+	private void drawLettuce(int x, int y, int width, int height, String texture, Graphics g) { 
+		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
+		try {
+			Image myImage = ImageIO.read(TextureToLoad);
+			//The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time 
+			//remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31  
+			int currentPositionInAnimation= ((int) (CurrentAnimationTime%4 )*32); //slows down animation so every 10 frames we get another frame so every 100ms 
+			g.drawImage(myImage, x,y, x+width, y+height, 0  , 0, 32, 32, null); 
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
+
+	public void drawGrid (Graphics g){
+		for (int i = 0; i < 9; i++){
+			for (int j = 0; j < 12; j++){
+				g.setColor(Color.BLACK);
+				g.fillRect(j * Model.widthAndHeight,i * Model.widthAndHeight, Model.widthAndHeight, Model.widthAndHeight);
+				g.setColor(Color.RED);
+				g.drawRect(j * Model.widthAndHeight,i * Model.widthAndHeight, Model.widthAndHeight, Model.widthAndHeight);
+				g.drawString("[ " + j + " , " + i + " ]", (j * Model.widthAndHeight) + 25, (i * Model.widthAndHeight) + 25);
+			}
+		}
+	}
 }
