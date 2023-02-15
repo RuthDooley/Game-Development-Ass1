@@ -46,18 +46,19 @@ public class Model {
 
 	public Model() {
 		// fillGridWithZeros();
-		Player= new GameObject("res/Lightning.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(200,300));
+		Player= new GameObject("res/LightningUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(200,300));
 		// Player= new GameObject("res/Lightning.png",widthAndHeight,widthAndHeight, new Point3f(200,100,0));
 	}
 
 	public static void gameDesignSetup (int levelNumber){
+		System.out.println("triggeredd");
 		switch(levelNumber) {
 			case 1:
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,300)));
 				break;
 			case 2:
-				// LettuceBinList.add(new GameObject("res/lettuceBin.png",widthAndHeight,widthAndHeight, setGridSpace(0,0,1)));
-				// LettuceBinList.add(new GameObject("res/lettuceBin.png",widthAndHeight,widthAndHeight, setGridSpace(7,14,1)));
+				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,300)));
+				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,300)));
 				break;
 			case 3:
 				// LettuceBinList.add(new GameObject("res/lettuceBin.png",widthAndHeight,widthAndHeight, setGridSpace(0,0,1)));
@@ -69,64 +70,6 @@ public class Model {
 				System.out.println("Somehting wrong here. Var = " + MainWindow.levelNumberSelected);
 		}	
 	}
-
-
-
-	// public static int[][] grid = new int[9][12];
-	// public static int[][] grid = {
-	// 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	// 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	// 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	// 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	// 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	// 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	// 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	// 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	// 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	// };
-
-	public static int[][] grid = {
-		{0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0},
-	};
-
-
-	// public static Point3f gridspaceToPoint3f (int xGridSpace, int yGridSpace){
-	// 	setGridPoint(xGridSpace, yGridSpace, 1);
-	// 	return new Point3f (xGridSpace * widthAndHeight, yGridSpace * widthAndHeight, 0);
-	// }
-
-	// public static void setGridPoint (int xGridSpace, int yGridSpace, int valueToSet){
-	// 	grid[yGridSpace][xGridSpace] = valueToSet;
-	// 	// printGrid();
-	// }
-
-	// public static int[] getGridPoint (Point3f coord){
-	// 	return new int[] {((int)coord.getX())/widthAndHeight, ((int)coord.getY())/widthAndHeight};
-	// }
-
-	// public static void printGrid(){
-	// 	for (int i = 0; i < 9; i++){
-	// 		for (int j = 0; j < 12; j++){
-	// 			if (grid[i][j] == 0)
-	// 				System.out.print("O ");
-	// 			else 
-	// 				System.out.print("X ");
-	// 		}
-	// 		System.out.println("");
-	// 	}
-	// 	System.out.println("");
-	// }
 	
 	// This is the heart of the game , where the model takes in all the inputs ,decides the outcomes and then changes the model accordingly. 
 	public void gamelogic() 
@@ -161,8 +104,17 @@ public class Model {
 		
 	}
 
+	public static String directPlayerfacing = "up";
+	private void turningPlayer (String direction){
+		//direction = up, down, left right
+		directPlayerfacing = direction;
+		String location = "res/Lightning" + direction.substring(0, 1).toUpperCase() + direction.substring(1) + ".png";
+		Player.setTextureLocation(location);
+	}
+
 	public static int gridSpace;
 	private void playerLogic() {
+
 		
 		if(Controller.getInstance().isKeyAPressed()){
 			gridSpace = Point3f.getGridValue(Player.getCentre());
@@ -176,8 +128,8 @@ public class Model {
 				gridSpace = Point3f.getGridValue(Player.getCentre());
 				System.out.println("after" + gridSpace);
 				Point3f.addCollider(gridSpace);
+				turningPlayer("left");
 			}
-
 		}
 		
 		if(Controller.getInstance().isKeyDPressed()){
@@ -192,6 +144,7 @@ public class Model {
 				gridSpace = Point3f.getGridValue(Player.getCentre());
 				System.out.println("after" + gridSpace);
 				Point3f.addCollider(gridSpace);
+				turningPlayer("right");
 			}
 
 		// 	//Could make an else here to do sound effects no move
@@ -209,6 +162,7 @@ public class Model {
 				gridSpace = Point3f.getGridValue(Player.getCentre());
 				System.out.println("after" + gridSpace);
 				Point3f.addCollider(gridSpace);
+				turningPlayer("up");
 			}
 		}
 		
@@ -219,16 +173,16 @@ public class Model {
 			if (/*gridSpace/100_000 d!= 0 && */!Point3f.spacesOccupied.contains(gridSpace + 100)){
 				System.out.println("here");
 				Point3f.removeCollider(gridSpace);
-				Player.getCentre().ApplyVector( new Vector3f(0,widthAndHeight,0));
+				Player.getCentre().ApplyVector( new Vector3f(0,-widthAndHeight,0));
 				Controller.getInstance().setKeySPressed(false);	
 				gridSpace = Point3f.getGridValue(Player.getCentre());
 				System.out.println("after" + gridSpace);
 				Point3f.addCollider(gridSpace);
+				turningPlayer("down");
 			}
 		}
 		
-		if(Controller.getInstance().isKeySpacePressed())
-{
+		if(Controller.getInstance().isKeySpacePressed()){
 			CreateBullet();
 			Controller.getInstance().setKeySpacePressed(false);
 		} 
