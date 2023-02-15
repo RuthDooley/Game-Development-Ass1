@@ -46,14 +46,14 @@ public class Model {
 
 	public Model() {
 		// fillGridWithZeros();
-		Player= new GameObject("res/Lightning.png",widthAndHeight,widthAndHeight, new Point3f(200,300, 0));
+		Player= new GameObject("res/Lightning.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(200,300));
 		// Player= new GameObject("res/Lightning.png",widthAndHeight,widthAndHeight, new Point3f(200,100,0));
 	}
 
 	public static void gameDesignSetup (int levelNumber){
 		switch(levelNumber) {
 			case 1:
-				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, new Point3f(100,100, 0)));
+				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,300)));
 				break;
 			case 2:
 				// LettuceBinList.add(new GameObject("res/lettuceBin.png",widthAndHeight,widthAndHeight, setGridSpace(0,0,1)));
@@ -69,6 +69,8 @@ public class Model {
 				System.out.println("Somehting wrong here. Var = " + MainWindow.levelNumberSelected);
 		}	
 	}
+
+
 
 	// public static int[][] grid = new int[9][12];
 	// public static int[][] grid = {
@@ -159,60 +161,70 @@ public class Model {
 		
 	}
 
-	public static int gridSpace[];
+	public static int gridSpace;
 	private void playerLogic() {
 		
 		if(Controller.getInstance().isKeyAPressed()){
-		// 	gridSpace = getGridPoint(Player.getCentre());
-			// setGridPoint(gridSpace[0], gridSpace[1], 0);
+			gridSpace = Point3f.getGridValue(Player.getCentre());
+			System.out.println("before" + gridSpace);
 
-
-				// if (grid[(gridSpace[0] - 1)][gridSpace[1]] == 0){
-					Player.getCentre().ApplyVector( new Vector3f(-widthAndHeight,0,0));
-					// gridSpace = getGridPoint(Player.getCentre());
-					// setGridPoint(gridSpace[0], gridSpace[1], 1);
-					Controller.getInstance().setKeyAPressed(false);	
-
-			// }
+			if (/*gridSpace/100_000 d!= 0 && */!Point3f.spacesOccupied.contains(gridSpace - 100_000)){
+				System.out.println("here");
+				Point3f.removeCollider(gridSpace);
+				Player.getCentre().ApplyVector( new Vector3f(-widthAndHeight,0,0));
+				Controller.getInstance().setKeyAPressed(false);	
+				gridSpace = Point3f.getGridValue(Player.getCentre());
+				System.out.println("after" + gridSpace);
+				Point3f.addCollider(gridSpace);
+			}
 
 		}
 		
 		if(Controller.getInstance().isKeyDPressed()){
+			gridSpace = Point3f.getGridValue(Player.getCentre());
+			System.out.println("before" + gridSpace);
 
-			// if (grid[(gridSpace[0])][(gridSpace[1] + 1)] == 0){
+			if (/*gridSpace/100_000 != 11 &&*/ !Point3f.spacesOccupied.contains(gridSpace + 100_000)){
+				System.out.println("here");
+				Point3f.removeCollider(gridSpace);
 				Player.getCentre().ApplyVector( new Vector3f(widthAndHeight,0,0));
-				// gridSpace = getGridPoint(Player.getCentre());
-				// setGridPoint(gridSpace[0], gridSpace[1], 1);
 				Controller.getInstance().setKeyDPressed(false);	
-			// }
+				gridSpace = Point3f.getGridValue(Player.getCentre());
+				System.out.println("after" + gridSpace);
+				Point3f.addCollider(gridSpace);
+			}
 
 		// 	//Could make an else here to do sound effects no move
 		}
 			
 		if(Controller.getInstance().isKeyWPressed()){
-			// gridSpace = getGridPoint(Player.getCentre());
-			// setGridPoint(gridSpace[0], gridSpace[1], 0);
+			gridSpace = Point3f.getGridValue(Player.getCentre());
+			System.out.println("before" + gridSpace);
 
-			// if (gridSpace[1] != 0){
-			// 	if (grid[(gridSpace[0] - 1)][gridSpace[1]] == 0){
-					Player.getCentre().ApplyVector( new Vector3f(0,widthAndHeight,0));
-					// gridSpace = getGridPoint(Player.getCentre());
-					// setGridPoint(gridSpace[0], gridSpace[1], 1);
-					Controller.getInstance().setKeyWPressed(false);	
-			// 	}
-			// }
+			if (/*gridSpace/100_000 d!= 0 && */!Point3f.spacesOccupied.contains(gridSpace - 100)){
+				System.out.println("here");
+				Point3f.removeCollider(gridSpace);
+				Player.getCentre().ApplyVector( new Vector3f(0,widthAndHeight,0));
+				Controller.getInstance().setKeyWPressed(false);	
+				gridSpace = Point3f.getGridValue(Player.getCentre());
+				System.out.println("after" + gridSpace);
+				Point3f.addCollider(gridSpace);
+			}
 		}
 		
 		if(Controller.getInstance().isKeySPressed()){
-			// gridSpace = getGridPoint(Player.getCentre());
-			// setGridPoint(gridSpace[0], gridSpace[1], 0);
+			gridSpace = Point3f.getGridValue(Player.getCentre());
+			System.out.println("before" + gridSpace);
 
-			// if (grid[(gridSpace[0] - 1)][gridSpace[1]] == 0){
-				Player.getCentre().ApplyVector( new Vector3f(0,-widthAndHeight,0));
-				// gridSpace = getGridPoint(Player.getCentre());
-				// setGridPoint(gridSpace[0], gridSpace[1], 1);
+			if (/*gridSpace/100_000 d!= 0 && */!Point3f.spacesOccupied.contains(gridSpace + 100)){
+				System.out.println("here");
+				Point3f.removeCollider(gridSpace);
+				Player.getCentre().ApplyVector( new Vector3f(0,widthAndHeight,0));
 				Controller.getInstance().setKeySPressed(false);	
-			// }
+				gridSpace = Point3f.getGridValue(Player.getCentre());
+				System.out.println("after" + gridSpace);
+				Point3f.addCollider(gridSpace);
+			}
 		}
 		
 		if(Controller.getInstance().isKeySpacePressed())

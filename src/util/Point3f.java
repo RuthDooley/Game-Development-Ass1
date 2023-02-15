@@ -25,6 +25,7 @@ SOFTWARE.
  */ 
 //Modified from Graphics 3033J course point class  by Abey Campbell 
 
+import java.util.ArrayList;
 
 public class Point3f {
 
@@ -90,12 +91,36 @@ public class Point3f {
 		return new Vector3f(this.getX()-Minus.getX(), this.getY()-Minus.getY(), this.getZ()-Minus.getZ());
 	}
 
-	public static void addCollider (){
-
+	public static ArrayList<Integer> spacesOccupied = new ArrayList<Integer>();
+	public static Point3f setPointInit (int x, int y){
+		int spaceID = Integer.parseInt("" + x + y);
+		addCollider(spaceID);
+		return new Point3f(x, y, 0);
 	}
 
-	 
-	
+	public static void addCollider (int spaceID){
+		if (!spacesOccupied.contains(spaceID))
+			spacesOccupied.add(spaceID);
+		printColliderArrayList();
+	}
+
+	public static void removeCollider (int spaceID){
+		if (spacesOccupied.contains(spaceID))
+			spacesOccupied.remove(spacesOccupied.indexOf(spaceID));
+		printColliderArrayList();
+	}
+
+	public static void printColliderArrayList (){
+		System.out.println(spacesOccupied.toString());
+	}
+
+	public static int getGridValue (Point3f coord){
+		return Integer.parseInt("" + ((int)coord.getX()) + ((int)coord.getY()));
+	}
+
+	// public static int valueNextToInput (int value, int difference){
+	// 	int result = 0;
+	// }
 	
 	 //Use for direct application of a Vector 
 	public void ApplyVector(Vector3f vector) { 
