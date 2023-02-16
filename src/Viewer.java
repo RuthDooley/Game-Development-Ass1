@@ -117,6 +117,12 @@ public class Viewer extends JPanel {
 
 		gameworld.getLettuceBins().forEach((temp) -> 
 		{
+			drawLettuceBin((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g);	 
+		 
+	    }); 
+
+		gameworld.getLettuce().forEach((temp) -> 
+		{
 			drawLettuce((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 32, 32, temp.getTexture(), g);	 
 		 
 	    }); 
@@ -164,6 +170,20 @@ public class Viewer extends JPanel {
 			e.printStackTrace();
 		}
 	}
+
+	private void drawLettuce(int x, int y, int width, int height, String texture,Graphics g)
+	{
+		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
+		try {
+			Image myImage = ImageIO.read(TextureToLoad); 
+			//64 by 128 
+			 g.drawImage(myImage, x,y, x+width, y+height, 0 , 0, 63, 127, null); 
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 
 	private void drawPlayer(int x, int y, int width, int height, String texture,Graphics g) { 
@@ -172,29 +192,24 @@ public class Viewer extends JPanel {
 			Image myImage = ImageIO.read(TextureToLoad);
 			//The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time 
 			//remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31  
-			int currentPositionInAnimation= ((int) ((CurrentAnimationTime%40)/10))*32; //slows down animation so every 10 frames we get another frame so every 100ms 
+			int currentPositionInAnimation= /*((int) ((CurrentAnimationTime%40)/10))**/0; //slows down animation so every 10 frames we get another frame so every 100ms 
 			g.drawImage(myImage, x,y, x+width, y+height, currentPositionInAnimation  , 0, currentPositionInAnimation+31, 32, null); 
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		 
-		//g.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer));
-		//Lighnting Png from https://opengameart.org/content/animated-spaceships  its 32x32 thats why I know to increament by 32 each time 
-		// Bullets from https://opengameart.org/forumtopic/tatermands-art 
-		// background image from https://www.needpix.com/photo/download/677346/space-stars-nebula-background-galaxy-universe-free-pictures-free-photos-free-images
 		
 	}
 
-	private void drawLettuce(int x, int y, int width, int height, String texture, Graphics g) { 
+	private void drawLettuceBin(int x, int y, int width, int height, String texture, Graphics g) { 
 		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
 		try {
 			Image myImage = ImageIO.read(TextureToLoad);
 			//The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time 
 			//remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31  
 			int currentPositionInAnimation= ((int) (CurrentAnimationTime%4 )*32); //slows down animation so every 10 frames we get another frame so every 100ms 
-			g.drawImage(myImage, x,y, x+width, y+height, 0  , 0, 32, 32, null); 
+			g.drawImage(myImage, x,y, x+width, y+height, 0  , 0, 100, 100, null); 
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

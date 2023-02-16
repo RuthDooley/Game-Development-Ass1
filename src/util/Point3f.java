@@ -92,9 +92,28 @@ public class Point3f {
 	}
 
 	public static ArrayList<Integer> spacesOccupied = new ArrayList<Integer>();
-	public static Point3f setPointInit (int x, int y){
+	public static ArrayList<Integer> lettuceBinSpacesOccupied = new ArrayList<Integer>();
+	public static ArrayList<Integer> lettuceSpacesOccupied = new ArrayList<Integer>();
+	//Gets added to the list of all colliders, also gets added to the list of specific assets give its type
+	public static Point3f setPointInit (int x, int y, String type){
 		int spaceID = Integer.parseInt("" + x + y);
-		addCollider(spaceID);
+		switch (type){
+			case "lettuceBin":
+				if (!lettuceBinSpacesOccupied.contains(spaceID)) 
+					lettuceBinSpacesOccupied.add(spaceID);
+					addCollider(spaceID);
+				break;
+			case "player":
+				addCollider(spaceID);
+				break;
+			case "lettuce":
+			if (!lettuceSpacesOccupied.contains(spaceID)) 
+				lettuceSpacesOccupied.add(spaceID);
+				break;
+			default:
+
+				break;
+		}
 		return new Point3f(x, y, 0);
 	}
 
