@@ -181,25 +181,25 @@ public class Model {
 		
 		if(Controller.getInstance().isKeySpacePressed()){
 			gridSpace = spaceInfrontOfPlayer();
-			// if (objectPlayerHolding != "none"){
-			// 	//Implement later can only place down on certain objects and also where there are no other lettuces
+			if (objectPlayerHolding != "none"){
+				//Implement later can only place down on certain objects and also where there are no other lettuces
 
-			// 	//Add new lettuce poistion to the counter space ie. the space infront of the player 
-			// 	LettuceList.add(new GameObject("res/bullet.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
-			// 	objectPlayerHolding = "none";
-			// } else if (Point3f.lettuceSpacesOccupied.contains(gridSpace)){
-			// 	objectPlayerHolding = "lettuce";
+				//Add new lettuce poistion to the counter space ie. the space infront of the player 
+				LettuceList.add(new GameObject("res/bullet.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
+				objectPlayerHolding = "none";
+			} else if (Point3f.lettuceSpacesOccupied.contains(gridSpace)){
+				objectPlayerHolding = "lettuce";
 
-			// 	//Lettuce position removed from the lettuce array and removed from the lettuce collisions
-			// 	for (GameObject temp : LettuceList){
-			// 		if (temp.getCentre().getX() == gridSpace/1000 && temp.getCentre().getY() == gridSpace%1000){
-			// 			LettuceList.remove(temp);
-			// 		}
-			// 	}
-			// 	Point3f.lettuceSpacesOccupied.remove(Point3f.lettuceSpacesOccupied.indexOf(gridSpace));
+				//Lettuce position removed from the lettuce array and removed from the lettuce collisions
+				for (GameObject temp : LettuceList){
+					if (temp.getCentre().getX() == gridSpace/1000 && temp.getCentre().getY() == gridSpace%1000){
+						LettuceList.remove(temp);
+					}
+				}
+				Point3f.lettuceSpacesOccupied.remove(Point3f.lettuceSpacesOccupied.indexOf(gridSpace));
 				
-			// 	//Change player sprite to player with lettuce
-			// } else 
+				//Change player sprite to player with lettuce
+			} else 
 			if (Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){
 				LettuceList.add(new GameObject("res/bullet.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
 				System.out.println("lettuce list " + LettuceList.get(0).getCentre().getX() + LettuceList.get(0).getCentre().getY());
@@ -208,7 +208,6 @@ public class Model {
 
 			Controller.getInstance().setKeySpacePressed(false);
 		}
-		// System.out.println(spaceInfrontOfPlayer());
 	}
 
 	private int spaceInfrontOfPlayer (){
