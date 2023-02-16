@@ -48,9 +48,7 @@ public class Model {
 	public static int widthAndHeight = 100;
 
 	public Model() {
-		// fillGridWithZeros();
 		Player= new GameObject("res/LightningUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(200,300, "player"));
-		// Player= new GameObject("res/Lightning.png",widthAndHeight,widthAndHeight, new Point3f(200,100,0));
 	}
 
 	public static void gameDesignSetup (int levelNumber){
@@ -73,37 +71,8 @@ public class Model {
 		}	
 	}
 	
-	// This is the heart of the game , where the model takes in all the inputs ,decides the outcomes and then changes the model accordingly. 
-	public void gamelogic() 
-	{
-		// Player Logic first 
+	public void gamelogic() {
 		playerLogic(); 
-		// Enemy Logic next
-		// enemyLogic();
-		// Bullets move next 
-		// bulletLogic();
-		// interactions between objects 
-		gameLogic(); 
-
-		// lettuceLogic();
-	   
-	}
-
-	private void gameLogic() { 
-		for (GameObject temp : EnemiesList) 
-		{
-		for (GameObject Bullet : BulletList) 
-		{
-			if ( Math.abs(temp.getCentre().getX()- Bullet.getCentre().getX())< temp.getWidth() 
-				&& Math.abs(temp.getCentre().getY()- Bullet.getCentre().getY()) < temp.getHeight())
-			{
-				EnemiesList.remove(temp);
-				BulletList.remove(Bullet);
-				Score++;
-			}  
-		}
-		}
-		
 	}
 
 	public static String directPlayerfacing = "up";
@@ -232,14 +201,6 @@ public class Model {
 
 	public GameObject getPlayer() {
 		return Player;
-	}
-
-	public CopyOnWriteArrayList<GameObject> getEnemies() {
-		return EnemiesList;
-	}
-	
-	public CopyOnWriteArrayList<GameObject> getBullets() {
-		return BulletList;
 	}
 
 	public CopyOnWriteArrayList<GameObject> getLettuceBins() {
