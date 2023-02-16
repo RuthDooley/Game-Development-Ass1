@@ -62,10 +62,8 @@ public class Model {
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,300, "lettuceBin")));
 				break;
 			case 3:
-				// LettuceBinList.add(new GameObject("res/lettuceBin.png",widthAndHeight,widthAndHeight, setGridSpace(0,0,1)));
-				// LettuceBinList.add(new GameObject("res/lettuceBin.png",widthAndHeight,widthAndHeight, setGridSpace(7,14,1)));
-				// LettuceBinList.add(new GameObject("res/lettuceBin.png",widthAndHeight,widthAndHeight, setGridSpace(1,1,1)));
-				// LettuceBinList.add(new GameObject("res/lettuceBin.png",widthAndHeight,widthAndHeight, setGridSpace(6,6,1)));
+				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(0,300, "lettuceBin")));
+				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,0, "lettuceBin")));
 				break;
 			default:
 				System.out.println("Somehting wrong here. Var = " + MainWindow.levelNumberSelected);
@@ -135,7 +133,6 @@ public class Model {
 		if(Controller.getInstance().isKeyDPressed()){
 			turningPlayer("right");
 			gridSpace = Point3f.getGridValue(Player.getCentre());
-			System.out.println("before" + gridSpace);
 
 			if (/*gridSpace/100_000 != 11 &&*/ !Point3f.spacesOccupied.contains(gridSpace + 100_000)){
 				System.out.println("here");
@@ -211,6 +208,7 @@ public class Model {
 
 			Controller.getInstance().setKeySpacePressed(false);
 		}
+		// System.out.println(spaceInfrontOfPlayer());
 	}
 
 	private int spaceInfrontOfPlayer (){

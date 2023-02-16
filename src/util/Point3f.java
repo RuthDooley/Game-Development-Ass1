@@ -96,7 +96,11 @@ public class Point3f {
 	public static ArrayList<Integer> lettuceSpacesOccupied = new ArrayList<Integer>();
 	//Gets added to the list of all colliders, also gets added to the list of specific assets give its type
 	public static Point3f setPointInit (int x, int y, String type){
-		int spaceID = Integer.parseInt("" + x + y);
+		int spaceID = 0;
+		if (y == 0)
+			spaceID = Integer.parseInt("" + x + "000");
+		else
+			spaceID = Integer.parseInt("" + x + y);
 		switch (type){
 			case "lettuceBin":
 				if (!lettuceBinSpacesOccupied.contains(spaceID)) 
@@ -134,6 +138,8 @@ public class Point3f {
 	}
 
 	public static int getGridValue (Point3f coord){
+		if ((int)coord.getY() == 0)
+			return Integer.parseInt("" + ((int)coord.getX()) + "000");
 		return Integer.parseInt("" + ((int)coord.getX()) + ((int)coord.getY()));
 	}
 
