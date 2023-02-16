@@ -54,14 +54,19 @@ public class MainWindow {
 	public static int startTime = 0;
 	public static int levelNum = 1;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		frame.setSize(2000, 1500);  
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   
 		frame.setLayout(null);
 		frame.setVisible(true);  
 
 		while (true){
+			startGame();
+		}
 
+	} 
+
+	public static void startGame () throws InterruptedException{
 			canvas.setBounds(0, 0, 2000, 1500); 
 			canvas.setBackground(new Color(255,255,255)); 
 			frame.add(canvas);  
@@ -70,21 +75,14 @@ public class MainWindow {
 			canvas.requestFocusInWindow();   
 
 			startTime = (int)(System.currentTimeMillis()/1000);
+			gameloop(levelNum);	
 
-
-
-			gameloop(levelNum);		
-			
 			frame.getContentPane().removeAll();
 			frame.repaint();
-
-			levelNum ++;
-		}
-
-	} 
+	}
 
 	//Basic Model-View-Controller pattern 
-	private static void gameloop(int levelNumberSelected) { 
+	private static void gameloop(int levelNumberSelected) throws InterruptedException { 
 		Model.gameDesignSetup(levelNumberSelected);
 		while(true){
 			//Need to keep this in
@@ -98,7 +96,7 @@ public class MainWindow {
 
 			if (Model.gameFinished){
 				//Can put in how many stars you got and then trigger this on event listener
-				levelNumberSelected += 1;
+				levelNum ++;
 				break;
 			}
 		}

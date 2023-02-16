@@ -116,6 +116,9 @@ public class Point3f {
 					counterSpacesOccupied.add(spaceID);
 					addCollider(spaceID);
 				break;
+			case "dropoff":
+				addCollider(spaceID);
+				break;
 			case "player":
 				addCollider(spaceID);
 				break;

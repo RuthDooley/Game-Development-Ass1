@@ -9,6 +9,8 @@ import util.Vector3f;
 
 import java.lang.Math;
 
+import java.util.concurrent.TimeUnit; //For sleep 
+
 
 /*
  * Created by Abraham Campbell on 15/01/2020.
@@ -38,12 +40,14 @@ public class Model {
 	
 	public static GameObject Player;
 	private Controller controller = Controller.getInstance();
-	public static CopyOnWriteArrayList<GameObject> LettuceBinList  = new CopyOnWriteArrayList<GameObject>();
-	public static CopyOnWriteArrayList<GameObject> LettuceList  = new CopyOnWriteArrayList<GameObject>();
-	public static CopyOnWriteArrayList<GameObject> BinList  = new CopyOnWriteArrayList<GameObject>();
-	public static CopyOnWriteArrayList<GameObject> CounterList  = new CopyOnWriteArrayList<GameObject>();
-	public static CopyOnWriteArrayList<GameObject> OrderList  = new CopyOnWriteArrayList<GameObject>();
-	public int Score=0; 
+	private static CopyOnWriteArrayList<GameObject> LettuceBinList  = new CopyOnWriteArrayList<GameObject>();	
+	private CopyOnWriteArrayList<GameObject> LettuceList  = new CopyOnWriteArrayList<GameObject>();
+	private static CopyOnWriteArrayList<GameObject> BinList  = new CopyOnWriteArrayList<GameObject>();
+	private static CopyOnWriteArrayList<GameObject> CounterList  = new CopyOnWriteArrayList<GameObject>();	
+	private static GameObject deliveryDropOff;
+	// public static CopyOnWriteArrayList<GameObject> OrderList  = new CopyOnWriteArrayList<GameObject>();
+
+	public static int Score=0; 
 	public static int Timer=0; 
 	public static int timerStart = 60;
 	public static Boolean gameFinished = false;
@@ -51,18 +55,18 @@ public class Model {
 	public static int widthAndHeight = 100;
 
 	public Model() {
-		// Player= new GameObject("res/LightningUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(200,300, "player"));
+		Player= new GameObject("res/LightningUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(200,300, "player"));
 	}
 
 	public static void gameDesignSetup (int levelNumber){
 		gameFinished = false;;
 		switch(levelNumber) {
 			case 1:
-				Player = new GameObject("res/LightningUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(200,300, "player"));
+				deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,0, "dropoff"));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,0, "lettuceBin")));
-				BinList.add(new GameObject("res/UFO.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,500, "bin")));
+				BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,500, "bin")));
 				CounterList.add(new GameObject("res/blankSprite.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "counter")));
-				timerStart = 4;
+				timerStart = 400;
 				break;
 			case 2:
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,300, "lettuceBin")));
@@ -77,7 +81,7 @@ public class Model {
 		}	
 	}
 	
-	public void gamelogic() {
+	public void gamelogic() throws InterruptedException {
 		playerLogic(); 
 		timerLogic();
 		// orderLogic();
@@ -88,12 +92,36 @@ public class Model {
 		if (Timer == 0){
 			gameFinished = true;
 		}
-        System.out.println(Timer);
+
+		//Reduce the timer on all of the orders 
+
+
+        // System.out.println(Timer);
+	}
+
+	public static ArrayList<Integer> OrderNameList  = new ArrayList<Integer>();
+	public static ArrayList<Integer> OrderTimeList  = new ArrayList<Integer>();
+	public static void orderLogic(){
+		if (OrderNameList.size() < 3){
+			getRandomOrder();
+		} else if (Timer % 4 == 0 && OrderNameList.size() < 6){
+			getRandomOrder();
+		}
+
+		if (Timer == 390)
+			OrderNameList.remove(0);
+
+		System.out.println(Arrays.toString(OrderNameList.toArray()));
+	}
+
+	public static int orderTime = 30;
+	public static void getRandomOrder (){
+		OrderNameList.add((int)Math.floor(Math.random() * 3));
+		OrderTimeList.add((int)(System.currentTimeMillis()/1000));
 	}
 
 	public static int gridSpace;
-	public static String objectPlayerHolding = "none";
-	private void playerLogic() {
+	private void playerLogic() throws InterruptedException{
 		if(Controller.getInstance().isKeyAPressed()){
 			actionOnDirectionKeyStroke("left");
 		}
@@ -169,25 +197,34 @@ public class Model {
 		}
 	}
 
-	private void actionOnSpaceStroke(){
+	public static ArrayList<String> objectPlayerHolding  = new ArrayList<String>();
+	private void actionOnSpaceStroke() throws InterruptedException{
 		gridSpace = spaceInfrontOfPlayer();
 
-		//Player holding something and they are in front of a bin
-		if (Point3f.binSpacesOccupied.contains(gridSpace) && objectPlayerHolding != "none"){
-			System.out.println("here this is a bin");
-			objectPlayerHolding = "none";
-
 		//If player is holding something ie. lettuce
-		} else if (objectPlayerHolding != "none"){ 
-			if (Point3f.counterSpacesOccupied.contains(gridSpace) || Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){			
-				//Add new lettuce poistion to the counter space ie. the space infront of the player 
-				LettuceList.add(new GameObject("res/bullet.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
-				objectPlayerHolding = "none";
+		if (objectPlayerHolding.size() > 0){ 
+			//and they are in front of a bin
+			if (Point3f.binSpacesOccupied.contains(gridSpace)){
+				System.out.println("here this is a bin");
+				objectPlayerHolding.clear();
 			}
+			//and they are in front of a counter or lettuce bin
+			else if (Point3f.counterSpacesOccupied.contains(gridSpace) || Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){			
+				//Add new lettuce poistion to the counter space ie. the space infront of the player 
+				LettuceList.add(new GameObject("res/lettuce.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
+				objectPlayerHolding.clear();
+			}
+			//and theyre infront of the delivery zone
+			else if (gridSpace/1000 == deliveryDropOff.getCentre().getX() && gridSpace % 1_000 == deliveryDropOff.getCentre().getY()){
+				System.out.println("delivery");
+				objectPlayerHolding.clear();
+				Score += 4;
+			}
+
 
 		//Not holding soemthing and there is a lettuce infront of them
 		} else if (Point3f.lettuceSpacesOccupied.contains(gridSpace)){
-			objectPlayerHolding = "lettuce";
+			objectPlayerHolding.add("lettuce");
 
 			//Lettuce position removed from the lettuce array and removed from the lettuce collisions
 			for (GameObject temp : LettuceList){
@@ -201,7 +238,7 @@ public class Model {
 
 		//Not holding anything and there is a lettuce bins infront of them
 		} else if (Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){
-			LettuceList.add(new GameObject("res/bullet.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
+			LettuceList.add(new GameObject("res/lettuce.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
 			System.out.println("lettuce list " + LettuceList.get(0).getCentre().getX() + LettuceList.get(0).getCentre().getY());
 			System.out.println("lettuce list cooliders" + Point3f.lettuceSpacesOccupied.toString());
 		}
@@ -244,6 +281,10 @@ public class Model {
 
 	public GameObject getPlayer() {
 		return Player;
+	}
+
+	public GameObject getDeliveryDropOff() {
+		return deliveryDropOff;
 	}
 
 	public CopyOnWriteArrayList<GameObject> getLettuceBins() {

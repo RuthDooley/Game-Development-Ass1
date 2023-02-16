@@ -97,15 +97,15 @@ public class Viewer extends JPanel {
 		drawGrid(g);
 
 		drawScore(g);
+
+		drawTimer(g);
+
+		drawOrders(g);
 		
-		drawPlayer(x, y, width, height, texture,g);
+		drawPlayer(x, y, width, height, texture,g); 
 
 		gameworld.getLettuceBins().forEach((temp) -> {
-			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g);	 
-	    }); 
-
-		gameworld.getLettuce().forEach((temp) -> {
-			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g);	 
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 320, 320, temp.getTexture(), g);	 
 	    }); 
 
 		gameworld.getBins().forEach((temp) -> {
@@ -114,6 +114,13 @@ public class Viewer extends JPanel {
 
 		gameworld.getCounters().forEach((temp) -> {
 			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g);	 
+	    }); 
+
+		//Drop off
+		drawAsset((int) gameworld.getDeliveryDropOff().getCentre().getX(), (int) gameworld.getDeliveryDropOff().getCentre().getY(), 100, 100, gameworld.getDeliveryDropOff().getTexture(), g);	
+
+		gameworld.getLettuce().forEach((temp) -> {
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 250, 250, temp.getTexture(), g);	 
 	    }); 
 	}
 
@@ -171,11 +178,49 @@ public class Viewer extends JPanel {
 		}
 	}
 
-	public void drawScore (Graphics g){
+	public void drawTimer (Graphics g){
 		g.setColor(Color.GREEN);
-		g.fillRect(1200,700, 300, 100);
+		g.fillRect(1200,800, 250, 100);
 		g.setColor(Color.BLUE);
-		g.drawRect(1200,700, 300, 100);
-		g.drawString(Integer.toString(Model.Timer), 1300, 750);
+		g.drawRect(1200,800, 250, 100);
+		g.drawString("Timer " + Integer.toString(Model.Timer), 1300, 850);
+	}
+
+	public void drawScore (Graphics g){
+		g.setColor(Color.PINK);
+		g.fillRect(1200,700, 250, 100);
+		g.setColor(Color.GREEN);
+		g.drawRect(1200,700, 250, 100);
+		g.drawString("Score " + Integer.toString(Model.Score), 1300, 750);
+	}
+
+	public void drawOrders(Graphics g){
+		g.setColor(Color.ORANGE);
+		g.fillRect(1200,0, 300, 100);
+		g.setColor(Color.GREEN);
+		g.drawRect(1200,0, 300, 100);
+		g.drawString("Orders", 1300, 50);
+
+		int counter = 100;
+		for (Integer temp : Model.OrderNameList){
+			g.setColor(Color.BLACK);
+			g.fillRect(1200,counter, 150, 100);
+			g.setColor(Color.GREEN);
+			g.drawRect(1200,counter, 150, 100);
+			switch (temp){
+				case 0:
+					g.drawString("Lettuce Salad", 1200, counter + 50);
+					break;
+				case 1:
+					g.drawString("Tomato Salad", 1200, counter + 50);
+					break;
+				case 2:
+					g.drawString("Lettuce and Tomato Salad", 1200, counter + 50);
+					break;
+				default:
+					System.out.println("Error in Viewer.drawOrders()");
+			}
+			counter += 100;
+		}
 	}
 }
