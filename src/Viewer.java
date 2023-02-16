@@ -85,13 +85,6 @@ public class Viewer extends JPanel {
 		super.paintComponent(g);
 		CurrentAnimationTime++; // runs animation time step 
 		
-		//Draw player Game Object 
-		int x = (int) gameworld.getPlayer().getCentre().getX();
-		int y = (int) gameworld.getPlayer().getCentre().getY();
-		int width = (int) gameworld.getPlayer().getWidth();
-		int height = (int) gameworld.getPlayer().getHeight();
-		String texture = gameworld.getPlayer().getTexture();
-		
 		// drawBackground(g);
 
 		drawGrid(g);
@@ -102,7 +95,7 @@ public class Viewer extends JPanel {
 
 		drawOrders(g);
 		
-		drawPlayer(x, y, width, height, texture,g); 
+		drawPlayer((int) gameworld.getPlayer().getCentre().getX(), (int) gameworld.getPlayer().getCentre().getY(), gameworld.getPlayer().getWidth(), gameworld.getPlayer().getHeight(), gameworld.getPlayer().getTexture(), g); 
 
 		gameworld.getLettuceBins().forEach((temp) -> {
 			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 320, 320, temp.getTexture(), g);	 
