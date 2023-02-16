@@ -41,6 +41,8 @@ public class Model {
 	private CopyOnWriteArrayList<GameObject> BulletList  = new CopyOnWriteArrayList<GameObject>();
 	private static CopyOnWriteArrayList<GameObject> LettuceBinList  = new CopyOnWriteArrayList<GameObject>();
 	private static CopyOnWriteArrayList<GameObject> LettuceList  = new CopyOnWriteArrayList<GameObject>();
+	private static CopyOnWriteArrayList<GameObject> BinList  = new CopyOnWriteArrayList<GameObject>();
+	private static CopyOnWriteArrayList<GameObject> CounterList  = new CopyOnWriteArrayList<GameObject>();
 	private int Score=0; 
 
 	public static int widthAndHeight = 100;
@@ -56,6 +58,7 @@ public class Model {
 		switch(levelNumber) {
 			case 1:
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,0, "lettuceBin")));
+				LettuceBinList.add(new GameObject("res/UFO.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,500, "bin")));
 				break;
 			case 2:
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,300, "lettuceBin")));
@@ -117,15 +120,12 @@ public class Model {
 		if(Controller.getInstance().isKeyAPressed()){
 			turningPlayer("left");
 			gridSpace = Point3f.getGridValue(Player.getCentre());
-			System.out.println("before" + gridSpace);
 
 			if (/*gridSpace/100_000 d!= 0 && */!Point3f.spacesOccupied.contains(gridSpace - 100_000)){
-				System.out.println("here");
 				Point3f.removeCollider(gridSpace);
 				Player.getCentre().ApplyVector( new Vector3f(-widthAndHeight,0,0));
 				Controller.getInstance().setKeyAPressed(false);	
 				gridSpace = Point3f.getGridValue(Player.getCentre());
-				System.out.println("after" + gridSpace);
 				Point3f.addCollider(gridSpace);
 			}
 		}
@@ -135,12 +135,10 @@ public class Model {
 			gridSpace = Point3f.getGridValue(Player.getCentre());
 
 			if (/*gridSpace/100_000 != 11 &&*/ !Point3f.spacesOccupied.contains(gridSpace + 100_000)){
-				System.out.println("here");
 				Point3f.removeCollider(gridSpace);
 				Player.getCentre().ApplyVector( new Vector3f(widthAndHeight,0,0));
 				Controller.getInstance().setKeyDPressed(false);	
 				gridSpace = Point3f.getGridValue(Player.getCentre());
-				System.out.println("after" + gridSpace);
 				Point3f.addCollider(gridSpace);
 			}
 
@@ -150,15 +148,12 @@ public class Model {
 		if(Controller.getInstance().isKeyWPressed()){
 			turningPlayer("up");
 			gridSpace = Point3f.getGridValue(Player.getCentre());
-			System.out.println("before" + gridSpace);
 
 			if (/*gridSpace/100_000 d!= 0 && */!Point3f.spacesOccupied.contains(gridSpace - 100)){
-				System.out.println("here");
 				Point3f.removeCollider(gridSpace);
 				Player.getCentre().ApplyVector( new Vector3f(0,widthAndHeight,0));
 				Controller.getInstance().setKeyWPressed(false);	
 				gridSpace = Point3f.getGridValue(Player.getCentre());
-				System.out.println("after" + gridSpace);
 				Point3f.addCollider(gridSpace);
 			}
 		}
@@ -166,22 +161,23 @@ public class Model {
 		if(Controller.getInstance().isKeySPressed()){
 			turningPlayer("down");
 			gridSpace = Point3f.getGridValue(Player.getCentre());
-			System.out.println("before" + gridSpace);
 
 			if (/*gridSpace/100_000 d!= 0 && */!Point3f.spacesOccupied.contains(gridSpace + 100)){
-				System.out.println("here");
 				Point3f.removeCollider(gridSpace);
 				Player.getCentre().ApplyVector( new Vector3f(0,-widthAndHeight,0));
 				Controller.getInstance().setKeySPressed(false);	
 				gridSpace = Point3f.getGridValue(Player.getCentre());
-				System.out.println("after" + gridSpace);
 				Point3f.addCollider(gridSpace);
 			}
 		}
 		
 		if(Controller.getInstance().isKeySpacePressed()){
 			gridSpace = spaceInfrontOfPlayer();
-			if (objectPlayerHolding != "none"){
+
+			if (Point3f.binSpacesOccupied.contains(gridSpace) && objectPlayerHolding != "none"){
+				System.out.println("here this is a bin");
+				objectPlayerHolding = "none";
+			} else if (objectPlayerHolding != "none"){ //If player is holding something ie. lettuce
 				//Implement later can only place down on certain objects and also where there are no other lettuces
 
 				//Add new lettuce poistion to the counter space ie. the space infront of the player 
@@ -199,8 +195,7 @@ public class Model {
 				Point3f.lettuceSpacesOccupied.remove(Point3f.lettuceSpacesOccupied.indexOf(gridSpace));
 				
 				//Change player sprite to player with lettuce
-			} else 
-			if (Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){
+			} else if (Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){
 				LettuceList.add(new GameObject("res/bullet.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
 				System.out.println("lettuce list " + LettuceList.get(0).getCentre().getX() + LettuceList.get(0).getCentre().getY());
 				System.out.println("lettuce list cooliders" + Point3f.lettuceSpacesOccupied.toString());
@@ -235,10 +230,6 @@ public class Model {
 		return gridSpace;
 	}
 
-	private void moveLettuce(){
-
-	}
-
 	public GameObject getPlayer() {
 		return Player;
 	}
@@ -257,6 +248,10 @@ public class Model {
 
 	public CopyOnWriteArrayList<GameObject> getLettuce() {
 		return LettuceList;
+	}
+
+	public CopyOnWriteArrayList<GameObject> getBins() {
+		return BinList;
 	}
 
 	public int getScore() { 
