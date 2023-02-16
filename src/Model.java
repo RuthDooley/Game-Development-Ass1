@@ -209,7 +209,12 @@ public class Model {
 			//and they are in front of a bin
 			if (Point3f.binSpacesOccupied.contains(gridSpace)){
 				System.out.println("here this is a bin");
-				objectPlayerHolding.clear(); //Except the plate
+				if (objectPlayerHolding.contains("plate")){
+					objectPlayerHolding.clear();
+					objectPlayerHolding.add("plate");
+				} else {
+					objectPlayerHolding.clear();
+				}
 			}
 			//and they are in front of a counter or lettuce bin
 			else if (Point3f.counterSpacesOccupied.contains(gridSpace) || Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){			
@@ -234,7 +239,7 @@ public class Model {
 
 		//Not holding soemthing ...
 		} else {
-			//and there is a lettuce infront of them
+			//and there is a lettuce or plate etc. infront of them
 			if (Point3f.lettuceSpacesOccupied.contains(gridSpace) || Point3f.plateSpacesOccupied.contains(gridSpace)){
 				if (Point3f.lettuceSpacesOccupied.contains(gridSpace)){
 					objectPlayerHolding.add("lettuce");
@@ -258,19 +263,12 @@ public class Model {
 					}
 					Point3f.plateSpacesOccupied.remove(Point3f.plateSpacesOccupied.indexOf(gridSpace));
 				}
+				//If theres not those lettuce bin instead
 			} else if (Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){
 				LettuceList.add(new GameObject("res/lettuce.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
 				System.out.println("lettuce list " + LettuceList.get(0).getCentre().getX() + LettuceList.get(0).getCentre().getY());
 				System.out.println("lettuce list cooliders" + Point3f.lettuceSpacesOccupied.toString());
-			}
-			
-			//TODO: Change player sprite to player with lettuce
-
-
-
-			//and there is a lettuce infront of them
-
-		
+			}		
 		}			
 		Controller.getInstance().setKeySpacePressed(false);
 	}
