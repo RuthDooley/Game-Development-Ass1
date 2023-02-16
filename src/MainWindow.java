@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import util.Point3f;
 import util.UnitTests;
 
 /*
@@ -50,114 +51,41 @@ public class MainWindow {
 	private static   int TargetFPS = 100;
 	public static boolean startGame= false; 
 	private   JLabel BackgroundImageForStartMenu ;
-	  
-	public MainWindow() {
-		frame.setSize(2000, 1500);  // you can customise this later and adapt it to change on size.  
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //If exit // you can modify with your way of quitting , just is a template.
-		frame.setLayout(null);
-
-		//All button handelling
-		JButton startMenuButton = new JButton("Start Game");  // start button 
-		startMenuButton.setBackground(Color.RED);
-		startMenuButton.setForeground(Color.RED);
-		startMenuButton.setBounds(400, 500, 200, 40);  
-		frame.add(startMenuButton);  
-		frame.setVisible(true);   
-
-		startMenuButton.addActionListener(new ActionListener(){ 
-		@Override
-		public void actionPerformed(ActionEvent e) { 
-			//Main menu to level selector menu
-			levelSelectorWindow();
-		}});  
-	}
-
 	public static int startTime = 0;
-	public static int levelNumberSelected = 0; 
-	// public static  Boolean allowButtonsClear = false; //Turn this to true when the user has made the selection and the buttons will dissapear
-	public static void levelSelectorWindow (){
-		repaintJFrame();
+	public static int levelNum = 1;
 
-		JButton levelSelect1 = new JButton("Start Game");  // start button 
-		levelSelect1.setBackground(Color.BLACK);
-		levelSelect1.setForeground(Color.GRAY);
-		levelSelect1.setBounds(400, 200, 200, 50);  
-		frame.add(levelSelect1);  
+	public static void main(String[] args) {
+		frame.setSize(2000, 1500);  
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   
+		frame.setLayout(null);
+		frame.setVisible(true);  
 
-		levelSelect1.addActionListener(new ActionListener(){ 
-		@Override
-		public void actionPerformed(ActionEvent e) { 
-			levelNumberSelected = 1;
-			startGame = true;
+		while (true){
+
+			canvas.setBounds(0, 0, 2000, 1500); 
+			canvas.setBackground(new Color(255,255,255)); 
+			frame.add(canvas);  
+
+			canvas.addKeyListener(Controller);    
+			canvas.requestFocusInWindow();   
 
 			startTime = (int)(System.currentTimeMillis()/1000);
 
-			Model.gameDesignSetup(1);
 
-			gameSetupCanvas();
-		}});  
 
-		JButton levelSelect2 = new JButton("Start Game");  // start button 
-		levelSelect2.setBackground(Color.BLACK);
-		levelSelect2.setForeground(Color.GRAY);
-		levelSelect2.setBounds(400, 300, 200, 50);  
-		frame.add(levelSelect2);  
-		levelSelect2.addActionListener(new ActionListener(){ 
-		@Override
-		public void actionPerformed(ActionEvent e) { 
-			levelNumberSelected = 2;
-			startGame = true;
+			gameloop(levelNum);		
+			
+			frame.getContentPane().removeAll();
+			frame.repaint();
 
-			Model.gameDesignSetup(2);
-
-			gameSetupCanvas();
-		}}); 
-
-		JButton levelSelect3 = new JButton("Start Game");  // start button 
-		levelSelect3.setBackground(Color.BLACK);
-		levelSelect3.setForeground(Color.GRAY);
-		levelSelect3.setBounds(400, 400, 200, 50);  
-		frame.add(levelSelect3);  
-		levelSelect3.addActionListener(new ActionListener(){ 
-		@Override
-		public void actionPerformed(ActionEvent e) { 
-			levelNumberSelected = 3;
-			startGame = true;
-
-			Model.gameDesignSetup(3);
-
-			gameSetupCanvas();
-		}}); 
-	}
-
-	//Remove all of the children of jframe and all of the elements 
-	public static void repaintJFrame () {
-		frame.getContentPane().removeAll();
-		frame.repaint();
-	}
-
-	//Setting up the elements for the game steup canvas as shown in template
-	public static void gameSetupCanvas (){
-		System.out.println("Set up canvas " + levelNumberSelected);
-		repaintJFrame();
-
-		canvas.setBounds(0, 0, 2000, 1500); 
-		canvas.setBackground(new Color(255,255,255)); //white background  replaced by Space background but if you remove the background method this will draw a white screen 
-		frame.add(canvas);  
-
-		canvas.addKeyListener(Controller);    //adding the controller to the Canvas  
-		canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
-	}
-
-	public static void main(String[] args) {
-		// Model.printGrid();
-		MainWindow hello = new MainWindow();  //sets up environment 
-		gameloop(levelNumberSelected);
+			levelNum ++;
+		}
 
 	} 
 
 	//Basic Model-View-Controller pattern 
 	private static void gameloop(int levelNumberSelected) { 
+		Model.gameDesignSetup(levelNumberSelected);
 		while(true){
 			//Need to keep this in
 			int TimeBetweenFrames =  1000 / TargetFPS;
@@ -166,27 +94,14 @@ public class MainWindow {
 			
 			gameworld.gamelogic();
 			canvas.updateview(); 
-			frame.setTitle("Score =  "+ gameworld.getScore()); 
+			frame.setTitle("Score =  " + gameworld.getScore()); 
 
-			if (gameworld.getScore() == 4){
-				startGame = false;
-				levelNumberSelected = 4;
+			if (Model.gameFinished){
+				//Can put in how many stars you got and then trigger this on event listener
+				levelNumberSelected += 1;
 				break;
 			}
-			  
 		}
-
-		if (!startGame){
-			levelSelectorWindow();
-		}
-
-		//wait until a selection has been made. This needs to be worked on
-		if (startGame){
-			gameworld = null;
-			canvas = null;
-			gameloop(levelNumberSelected);
-		}
-		
 	}
 }
 

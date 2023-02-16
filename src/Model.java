@@ -36,29 +36,33 @@ SOFTWARE.
  */ 
 public class Model {
 	
-	private GameObject Player;
+	public static GameObject Player;
 	private Controller controller = Controller.getInstance();
-	private static CopyOnWriteArrayList<GameObject> LettuceBinList  = new CopyOnWriteArrayList<GameObject>();
-	private static CopyOnWriteArrayList<GameObject> LettuceList  = new CopyOnWriteArrayList<GameObject>();
-	private static CopyOnWriteArrayList<GameObject> BinList  = new CopyOnWriteArrayList<GameObject>();
-	private static CopyOnWriteArrayList<GameObject> CounterList  = new CopyOnWriteArrayList<GameObject>();
-	private static CopyOnWriteArrayList<GameObject> OrderList  = new CopyOnWriteArrayList<GameObject>();
-	private int Score=0; 
+	public static CopyOnWriteArrayList<GameObject> LettuceBinList  = new CopyOnWriteArrayList<GameObject>();
+	public static CopyOnWriteArrayList<GameObject> LettuceList  = new CopyOnWriteArrayList<GameObject>();
+	public static CopyOnWriteArrayList<GameObject> BinList  = new CopyOnWriteArrayList<GameObject>();
+	public static CopyOnWriteArrayList<GameObject> CounterList  = new CopyOnWriteArrayList<GameObject>();
+	public static CopyOnWriteArrayList<GameObject> OrderList  = new CopyOnWriteArrayList<GameObject>();
+	public int Score=0; 
 	public static int Timer=0; 
+	public static int timerStart = 60;
+	public static Boolean gameFinished = false;
 
 	public static int widthAndHeight = 100;
 
 	public Model() {
-		Player= new GameObject("res/LightningUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(200,300, "player"));
+		// Player= new GameObject("res/LightningUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(200,300, "player"));
 	}
 
 	public static void gameDesignSetup (int levelNumber){
-		System.out.println("triggeredd");
+		gameFinished = false;;
 		switch(levelNumber) {
 			case 1:
+				Player = new GameObject("res/LightningUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(200,300, "player"));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,0, "lettuceBin")));
 				BinList.add(new GameObject("res/UFO.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,500, "bin")));
 				CounterList.add(new GameObject("res/blankSprite.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "counter")));
+				timerStart = 4;
 				break;
 			case 2:
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,300, "lettuceBin")));
@@ -69,7 +73,7 @@ public class Model {
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,0, "lettuceBin")));
 				break;
 			default:
-				System.out.println("Somehting wrong here. Var = " + MainWindow.levelNumberSelected);
+				System.out.println("Error in gameDesignSetup()");
 		}	
 	}
 	
@@ -80,8 +84,11 @@ public class Model {
 	}
 
 	private void timerLogic (){
-		Timer = (60 - ((int)(System.currentTimeMillis()/1000) - MainWindow.startTime));
-        System.out.println(60 - (System.currentTimeMillis()/1000 - MainWindow.startTime));
+		Timer = (timerStart - ((int)(System.currentTimeMillis()/1000) - MainWindow.startTime));
+		if (Timer == 0){
+			gameFinished = true;
+		}
+        System.out.println(Timer);
 	}
 
 	public static int gridSpace;
