@@ -95,6 +95,8 @@ public class Viewer extends JPanel {
 		// drawBackground(g);
 
 		drawGrid(g);
+
+		drawScore(g);
 		
 		drawPlayer(x, y, width, height, texture,g);
 
@@ -107,6 +109,10 @@ public class Viewer extends JPanel {
 	    }); 
 
 		gameworld.getBins().forEach((temp) -> {
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g);	 
+	    }); 
+
+		gameworld.getCounters().forEach((temp) -> {
 			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g);	 
 	    }); 
 	}
@@ -163,5 +169,13 @@ public class Viewer extends JPanel {
 				g.drawString("[ " + j + " , " + i + " ]", (j * Model.widthAndHeight) + 25, (i * Model.widthAndHeight) + 25);
 			}
 		}
+	}
+
+	public void drawScore (Graphics g){
+		g.setColor(Color.GREEN);
+		g.fillRect(1200,700, 300, 100);
+		g.setColor(Color.BLUE);
+		g.drawRect(1200,700, 300, 100);
+		g.drawString(Integer.toString(Model.Timer), 1300, 750);
 	}
 }

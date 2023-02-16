@@ -9,6 +9,7 @@ import util.Vector3f;
 
 import java.lang.Math;
 
+
 /*
  * Created by Abraham Campbell on 15/01/2020.
  *   Copyright (c) 2020  Abraham Campbell
@@ -41,7 +42,9 @@ public class Model {
 	private static CopyOnWriteArrayList<GameObject> LettuceList  = new CopyOnWriteArrayList<GameObject>();
 	private static CopyOnWriteArrayList<GameObject> BinList  = new CopyOnWriteArrayList<GameObject>();
 	private static CopyOnWriteArrayList<GameObject> CounterList  = new CopyOnWriteArrayList<GameObject>();
+	private static CopyOnWriteArrayList<GameObject> OrderList  = new CopyOnWriteArrayList<GameObject>();
 	private int Score=0; 
+	public static int Timer=0; 
 
 	public static int widthAndHeight = 100;
 
@@ -54,7 +57,8 @@ public class Model {
 		switch(levelNumber) {
 			case 1:
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,0, "lettuceBin")));
-				LettuceBinList.add(new GameObject("res/UFO.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,500, "bin")));
+				BinList.add(new GameObject("res/UFO.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,500, "bin")));
+				CounterList.add(new GameObject("res/blankSprite.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "counter")));
 				break;
 			case 2:
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,300, "lettuceBin")));
@@ -71,6 +75,13 @@ public class Model {
 	
 	public void gamelogic() {
 		playerLogic(); 
+		timerLogic();
+		// orderLogic();
+	}
+
+	private void timerLogic (){
+		Timer = (60 - ((int)(System.currentTimeMillis()/1000) - MainWindow.startTime));
+        System.out.println(60 - (System.currentTimeMillis()/1000 - MainWindow.startTime));
 	}
 
 	public static int gridSpace;
@@ -154,15 +165,20 @@ public class Model {
 	private void actionOnSpaceStroke(){
 		gridSpace = spaceInfrontOfPlayer();
 
+		//Player holding something and they are in front of a bin
 		if (Point3f.binSpacesOccupied.contains(gridSpace) && objectPlayerHolding != "none"){
 			System.out.println("here this is a bin");
 			objectPlayerHolding = "none";
-		} else if (objectPlayerHolding != "none"){ //If player is holding something ie. lettuce
-			//Implement later can only place down on certain objects and also where there are no other lettuces
 
-			//Add new lettuce poistion to the counter space ie. the space infront of the player 
-			LettuceList.add(new GameObject("res/bullet.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
-			objectPlayerHolding = "none";
+		//If player is holding something ie. lettuce
+		} else if (objectPlayerHolding != "none"){ 
+			if (Point3f.counterSpacesOccupied.contains(gridSpace) || Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){			
+				//Add new lettuce poistion to the counter space ie. the space infront of the player 
+				LettuceList.add(new GameObject("res/bullet.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
+				objectPlayerHolding = "none";
+			}
+
+		//Not holding soemthing and there is a lettuce infront of them
 		} else if (Point3f.lettuceSpacesOccupied.contains(gridSpace)){
 			objectPlayerHolding = "lettuce";
 
@@ -174,7 +190,9 @@ public class Model {
 			}
 			Point3f.lettuceSpacesOccupied.remove(Point3f.lettuceSpacesOccupied.indexOf(gridSpace));
 			
-			//Change player sprite to player with lettuce
+			//TODO: Change player sprite to player with lettuce
+
+		//Not holding anything and there is a lettuce bins infront of them
 		} else if (Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){
 			LettuceList.add(new GameObject("res/bullet.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
 			System.out.println("lettuce list " + LettuceList.get(0).getCentre().getX() + LettuceList.get(0).getCentre().getY());
@@ -231,6 +249,10 @@ public class Model {
 
 	public CopyOnWriteArrayList<GameObject> getBins() {
 		return BinList;
+	}
+
+	public CopyOnWriteArrayList<GameObject> getCounters() {
+		return CounterList;
 	}
 
 	public int getScore() { 

@@ -68,12 +68,9 @@ public class Point3f {
 		} 
 	}
 	
-	public String toString()
-	{
+	public String toString(){
 		return ("(" + getX() +"," + getY() +"," + getZ() +")");
     }
-
-
 
 	 //implement Point plus a Vector and comment what the method does 
 	public Point3f PlusVector(Vector3f Additonal) { 
@@ -95,6 +92,7 @@ public class Point3f {
 	public static ArrayList<Integer> lettuceBinSpacesOccupied = new ArrayList<Integer>();
 	public static ArrayList<Integer> lettuceSpacesOccupied = new ArrayList<Integer>();
 	public static ArrayList<Integer> binSpacesOccupied = new ArrayList<Integer>();
+	public static ArrayList<Integer> counterSpacesOccupied = new ArrayList<Integer>();
 	//Gets added to the list of all colliders, also gets added to the list of specific assets give its type
 	public static Point3f setPointInit (int x, int y, String type){
 		int spaceID = 0;
@@ -111,6 +109,11 @@ public class Point3f {
 			case "bin":
 				if (!binSpacesOccupied.contains(spaceID)) 
 					binSpacesOccupied.add(spaceID);
+					addCollider(spaceID);
+				break;
+			case "counter":
+				if (!counterSpacesOccupied.contains(spaceID)) 
+					counterSpacesOccupied.add(spaceID);
 					addCollider(spaceID);
 				break;
 			case "player":

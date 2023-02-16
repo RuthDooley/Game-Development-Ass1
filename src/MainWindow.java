@@ -72,6 +72,7 @@ public class MainWindow {
 		}});  
 	}
 
+	public static int startTime = 0;
 	public static int levelNumberSelected = 0; 
 	// public static  Boolean allowButtonsClear = false; //Turn this to true when the user has made the selection and the buttons will dissapear
 	public static void levelSelectorWindow (){
@@ -88,6 +89,8 @@ public class MainWindow {
 		public void actionPerformed(ActionEvent e) { 
 			levelNumberSelected = 1;
 			startGame = true;
+
+			startTime = (int)(System.currentTimeMillis()/1000);
 
 			Model.gameDesignSetup(1);
 
@@ -177,7 +180,6 @@ public class MainWindow {
 			levelSelectorWindow();
 		}
 
-	
 		//wait until a selection has been made. This needs to be worked on
 		if (startGame){
 			gameworld = null;
