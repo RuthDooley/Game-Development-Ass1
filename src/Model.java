@@ -8,7 +8,7 @@ import util.Point3f;
 import util.Vector3f; 
 
 import java.lang.Math;
-
+import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit; //For sleep 
 
 
@@ -42,6 +42,10 @@ public class Model {
 	private Controller controller = Controller.getInstance();
 	private static CopyOnWriteArrayList<GameObject> LettuceBinList  = new CopyOnWriteArrayList<GameObject>();	
 	private CopyOnWriteArrayList<GameObject> LettuceList  = new CopyOnWriteArrayList<GameObject>();
+	private static CopyOnWriteArrayList<GameObject> TomatoBinList  = new CopyOnWriteArrayList<GameObject>();	
+	private CopyOnWriteArrayList<GameObject> TomatoList  = new CopyOnWriteArrayList<GameObject>();
+	private static CopyOnWriteArrayList<GameObject> CucumberBinList  = new CopyOnWriteArrayList<GameObject>();	
+	private CopyOnWriteArrayList<GameObject> CucumberList  = new CopyOnWriteArrayList<GameObject>();
 	private static CopyOnWriteArrayList<GameObject> BinList  = new CopyOnWriteArrayList<GameObject>();
 	private static CopyOnWriteArrayList<GameObject> CounterList  = new CopyOnWriteArrayList<GameObject>();	
 	private static CopyOnWriteArrayList<GameObject> PlateList  = new CopyOnWriteArrayList<GameObject>();	
@@ -66,7 +70,10 @@ public class Model {
 			case 1:
 				deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,0, "dropoff"));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,0, "lettuceBin")));
+				TomatoBinList.add(new GameObject("res/tomatoBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(400,0, "tomatoBin")));
+				CucumberBinList.add(new GameObject("res/cucumberBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(500,0, "cucumberBin")));
 				BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,500, "bin")));
+				//CucumberList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,0, "lettuceBin")));
 				CounterList.add(new GameObject("res/blankSprite.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "counter")));
 				PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "plate")));
 				timerStart = 400;
@@ -107,9 +114,11 @@ public class Model {
 	public static void orderLogic(){
 		if (OrderNameList.size() < 3){
 			getRandomOrder();
-		} else if (Timer % 4 == 0 && OrderNameList.size() < 6){
-			getRandomOrder();
-		}
+		} 
+		
+		// else if (Timer % 4 == 0 && OrderNameList.size() < 6){
+		// 	getRandomOrder();
+		// }
 
 		if (Timer == 390)
 			OrderNameList.remove(0);
@@ -217,11 +226,21 @@ public class Model {
 				}
 			}
 			//and they are in front of a counter or lettuce bin
-			else if (Point3f.counterSpacesOccupied.contains(gridSpace) || Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){			
+			else if (Point3f.counterSpacesOccupied.contains(gridSpace) || Point3f.lettuceBinSpacesOccupied.contains(gridSpace) || Point3f.cucumberBinSpacesOccupied.contains(gridSpace) || Point3f.tomatoBinSpacesOccupied.contains(gridSpace)){			
 				//Add new lettuce poistion to the counter space ie. the space infront of the player 
 				if (objectPlayerHolding.contains("lettuce")){
 					LettuceList.add(new GameObject("res/lettuce.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
 					objectPlayerHolding.remove(objectPlayerHolding.indexOf("lettuce"));
+				}
+
+				if (objectPlayerHolding.contains("tomato")){
+					TomatoList.add(new GameObject("res/tomato.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "tomato")));
+					objectPlayerHolding.remove(objectPlayerHolding.indexOf("tomato"));
+				}
+
+				if (objectPlayerHolding.contains("cucumber")){
+					CucumberList.add(new GameObject("res/cucumber.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "cucumber")));
+					objectPlayerHolding.remove(objectPlayerHolding.indexOf("cucumber"));
 				}
 
 				if (objectPlayerHolding.contains("plate")){
@@ -240,7 +259,7 @@ public class Model {
 		//Not holding soemthing ...
 		} else {
 			//and there is a lettuce or plate etc. infront of them
-			if (Point3f.lettuceSpacesOccupied.contains(gridSpace) || Point3f.plateSpacesOccupied.contains(gridSpace)){
+			if (Point3f.lettuceSpacesOccupied.contains(gridSpace) || Point3f.plateSpacesOccupied.contains(gridSpace) || Point3f.tomatoSpacesOccupied.contains(gridSpace) || Point3f.cucumberSpacesOccupied.contains(gridSpace)){
 				if (Point3f.lettuceSpacesOccupied.contains(gridSpace)){
 					objectPlayerHolding.add("lettuce");
 
@@ -251,7 +270,30 @@ public class Model {
 						}
 					}
 					Point3f.lettuceSpacesOccupied.remove(Point3f.lettuceSpacesOccupied.indexOf(gridSpace));
-				}			
+				}	
+				
+				if (Point3f.tomatoSpacesOccupied.contains(gridSpace)){
+					objectPlayerHolding.add("tomato");
+					for (GameObject temp : TomatoList){
+						if (temp.getCentre().getX() == gridSpace/1000 && temp.getCentre().getY() == gridSpace%1000){
+							TomatoList.remove(temp);
+						}
+					}
+					Point3f.tomatoSpacesOccupied.remove(Point3f.tomatoSpacesOccupied.indexOf(gridSpace));
+				}	
+
+				if (Point3f.cucumberSpacesOccupied.contains(gridSpace)){
+					objectPlayerHolding.add("cucumber");
+
+					//Lettuce position removed from the lettuce array and removed from the lettuce collisions
+					for (GameObject temp : CucumberList){
+						if (temp.getCentre().getX() == gridSpace/1000 && temp.getCentre().getY() == gridSpace%1000){
+							CucumberList.remove(temp);
+						}
+					}
+					Point3f.cucumberSpacesOccupied.remove(Point3f.cucumberSpacesOccupied.indexOf(gridSpace));
+				}	
+
 				if (Point3f.plateSpacesOccupied.contains(gridSpace)){
 					objectPlayerHolding.add("plate");
 
@@ -263,11 +305,21 @@ public class Model {
 					}
 					Point3f.plateSpacesOccupied.remove(Point3f.plateSpacesOccupied.indexOf(gridSpace));
 				}
-				//If theres not those lettuce bin instead
-			} else if (Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){
-				LettuceList.add(new GameObject("res/lettuce.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
-				System.out.println("lettuce list " + LettuceList.get(0).getCentre().getX() + LettuceList.get(0).getCentre().getY());
-				System.out.println("lettuce list cooliders" + Point3f.lettuceSpacesOccupied.toString());
+				//If theres not those but lettuce bin or other veg bin instead
+			} else if (Point3f.lettuceBinSpacesOccupied.contains(gridSpace) || Point3f.tomatoBinSpacesOccupied.contains(gridSpace) || Point3f.cucumberBinSpacesOccupied.contains(gridSpace)){
+				if (Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){
+					LettuceList.add(new GameObject("res/lettuce.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
+				} else if (Point3f.tomatoBinSpacesOccupied.contains(gridSpace)){
+					TomatoList.add(new GameObject("res/tomato.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "tomato")));
+				} else if (Point3f.cucumberBinSpacesOccupied.contains(gridSpace)){
+					System.out.println("triggered cucumber");
+					CucumberList.add(new GameObject("res/cucumber.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "cucumber")));
+
+					System.out.println(CucumberList.toArray().toString());
+				}
+				
+				// System.out.println("lettuce list " + LettuceList.get(0).getCentre().getX() + LettuceList.get(0).getCentre().getY());
+				// System.out.println("lettuce list cooliders" + Point3f.lettuceSpacesOccupied.toString());
 			}		
 		}			
 		Controller.getInstance().setKeySpacePressed(false);
@@ -320,6 +372,22 @@ public class Model {
 
 	public CopyOnWriteArrayList<GameObject> getLettuce() {
 		return LettuceList;
+	}
+
+	public CopyOnWriteArrayList<GameObject> getTomatoBins() { //Tomato
+		return TomatoBinList;
+	}
+
+	public CopyOnWriteArrayList<GameObject> getTomato() {
+		return TomatoList;
+	}
+
+	public CopyOnWriteArrayList<GameObject> getCucumberBins() { //Cucumber
+		return CucumberBinList;
+	}
+
+	public CopyOnWriteArrayList<GameObject> getCucumber() {
+		return CucumberList;
 	}
 
 	public CopyOnWriteArrayList<GameObject> getBins() {

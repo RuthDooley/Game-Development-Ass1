@@ -90,7 +90,11 @@ public class Point3f {
 
 	public static ArrayList<Integer> spacesOccupied = new ArrayList<Integer>();
 	public static ArrayList<Integer> lettuceBinSpacesOccupied = new ArrayList<Integer>();
+	public static ArrayList<Integer> tomatoBinSpacesOccupied = new ArrayList<Integer>();
+	public static ArrayList<Integer> cucumberBinSpacesOccupied = new ArrayList<Integer>();
 	public static ArrayList<Integer> lettuceSpacesOccupied = new ArrayList<Integer>();
+	public static ArrayList<Integer> tomatoSpacesOccupied = new ArrayList<Integer>();
+	public static ArrayList<Integer> cucumberSpacesOccupied = new ArrayList<Integer>();
 	public static ArrayList<Integer> binSpacesOccupied = new ArrayList<Integer>();
 	public static ArrayList<Integer> counterSpacesOccupied = new ArrayList<Integer>();
 	public static ArrayList<Integer> plateSpacesOccupied = new ArrayList<Integer>();
@@ -105,6 +109,16 @@ public class Point3f {
 			case "lettuceBin":
 				if (!lettuceBinSpacesOccupied.contains(spaceID)) 
 					lettuceBinSpacesOccupied.add(spaceID);
+					addCollider(spaceID);
+				break;
+			case "tomatoBin":
+				if (!tomatoBinSpacesOccupied.contains(spaceID)) 
+					tomatoBinSpacesOccupied.add(spaceID);
+					addCollider(spaceID);
+				break;
+			case "cucumberBin":
+				if (!cucumberBinSpacesOccupied.contains(spaceID)) 
+					cucumberBinSpacesOccupied.add(spaceID);
 					addCollider(spaceID);
 				break;
 			case "bin":
@@ -124,8 +138,17 @@ public class Point3f {
 				addCollider(spaceID);
 				break;
 			case "lettuce":
-			if (!lettuceSpacesOccupied.contains(spaceID)) 
-				lettuceSpacesOccupied.add(spaceID);
+				if (!lettuceSpacesOccupied.contains(spaceID)) 
+					lettuceSpacesOccupied.add(spaceID);
+				break;
+			case "tomato":
+				if (!tomatoSpacesOccupied.contains(spaceID)) 
+					tomatoSpacesOccupied.add(spaceID);
+				break;
+
+			case "cucumber":
+				if (!cucumberSpacesOccupied.contains(spaceID)) 
+					cucumberSpacesOccupied.add(spaceID);
 				break;
 			case "plate":
 				if (!plateSpacesOccupied.contains(spaceID)) 

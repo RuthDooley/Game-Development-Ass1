@@ -101,6 +101,14 @@ public class Viewer extends JPanel {
 			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 320, 320, temp.getTexture(), g);	 
 	    }); 
 
+		gameworld.getTomatoBins().forEach((temp) -> {
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 320, 320, temp.getTexture(), g);	 
+	    }); 
+
+		gameworld.getCucumberBins().forEach((temp) -> {
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 320, 320, temp.getTexture(), g);	 
+	    }); 
+
 		gameworld.getBins().forEach((temp) -> {
 			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 250, 250, temp.getTexture(), g);	 
 	    }); 
@@ -117,6 +125,14 @@ public class Viewer extends JPanel {
 	    }); 
 
 		gameworld.getLettuce().forEach((temp) -> {
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 250, 250, temp.getTexture(), g);	 
+	    }); 
+
+		gameworld.getTomato().forEach((temp) -> {
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 250, 250, temp.getTexture(), g);	 
+	    }); 
+
+		gameworld.getCucumber().forEach((temp) -> {
 			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 250, 250, temp.getTexture(), g);	 
 	    }); 
 	}
