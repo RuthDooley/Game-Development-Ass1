@@ -44,6 +44,7 @@ public class Model {
 	private CopyOnWriteArrayList<GameObject> LettuceList  = new CopyOnWriteArrayList<GameObject>();
 	private static CopyOnWriteArrayList<GameObject> BinList  = new CopyOnWriteArrayList<GameObject>();
 	private static CopyOnWriteArrayList<GameObject> CounterList  = new CopyOnWriteArrayList<GameObject>();	
+	private static CopyOnWriteArrayList<GameObject> PlateList  = new CopyOnWriteArrayList<GameObject>();	
 	private static GameObject deliveryDropOff;
 	// public static CopyOnWriteArrayList<GameObject> OrderList  = new CopyOnWriteArrayList<GameObject>();
 
@@ -59,13 +60,15 @@ public class Model {
 	}
 
 	public static void gameDesignSetup (int levelNumber){
-		gameFinished = false;;
+		gameFinished = false;
+		//TODO: Reset all of the array lists maybe here
 		switch(levelNumber) {
 			case 1:
 				deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,0, "dropoff"));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,0, "lettuceBin")));
 				BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,500, "bin")));
 				CounterList.add(new GameObject("res/blankSprite.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "counter")));
+				PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "plate")));
 				timerStart = 400;
 				break;
 			case 2:
@@ -206,13 +209,20 @@ public class Model {
 			//and they are in front of a bin
 			if (Point3f.binSpacesOccupied.contains(gridSpace)){
 				System.out.println("here this is a bin");
-				objectPlayerHolding.clear();
+				objectPlayerHolding.clear(); //Except the plate
 			}
 			//and they are in front of a counter or lettuce bin
 			else if (Point3f.counterSpacesOccupied.contains(gridSpace) || Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){			
 				//Add new lettuce poistion to the counter space ie. the space infront of the player 
-				LettuceList.add(new GameObject("res/lettuce.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
-				objectPlayerHolding.clear();
+				if (objectPlayerHolding.contains("lettuce")){
+					LettuceList.add(new GameObject("res/lettuce.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
+					objectPlayerHolding.remove(objectPlayerHolding.indexOf("lettuce"));
+				}
+
+				if (objectPlayerHolding.contains("plate")){
+					PlateList.add(new GameObject("res/plate.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "plate")));
+					objectPlayerHolding.remove(objectPlayerHolding.indexOf("plate"));
+				}
 			}
 			//and theyre infront of the delivery zone
 			else if (gridSpace/1000 == deliveryDropOff.getCentre().getX() && gridSpace % 1_000 == deliveryDropOff.getCentre().getY()){
@@ -222,27 +232,46 @@ public class Model {
 			}
 
 
-		//Not holding soemthing and there is a lettuce infront of them
-		} else if (Point3f.lettuceSpacesOccupied.contains(gridSpace)){
-			objectPlayerHolding.add("lettuce");
+		//Not holding soemthing ...
+		} else {
+			//and there is a lettuce infront of them
+			if (Point3f.lettuceSpacesOccupied.contains(gridSpace) || Point3f.plateSpacesOccupied.contains(gridSpace)){
+				if (Point3f.lettuceSpacesOccupied.contains(gridSpace)){
+					objectPlayerHolding.add("lettuce");
 
-			//Lettuce position removed from the lettuce array and removed from the lettuce collisions
-			for (GameObject temp : LettuceList){
-				if (temp.getCentre().getX() == gridSpace/1000 && temp.getCentre().getY() == gridSpace%1000){
-					LettuceList.remove(temp);
+					//Lettuce position removed from the lettuce array and removed from the lettuce collisions
+					for (GameObject temp : LettuceList){
+						if (temp.getCentre().getX() == gridSpace/1000 && temp.getCentre().getY() == gridSpace%1000){
+							LettuceList.remove(temp);
+						}
+					}
+					Point3f.lettuceSpacesOccupied.remove(Point3f.lettuceSpacesOccupied.indexOf(gridSpace));
+				}			
+				if (Point3f.plateSpacesOccupied.contains(gridSpace)){
+					objectPlayerHolding.add("plate");
+
+					//Lettuce position removed from the lettuce array and removed from the lettuce collisions
+					for (GameObject temp : PlateList){
+						if (temp.getCentre().getX() == gridSpace/1000 && temp.getCentre().getY() == gridSpace%1000){
+							PlateList.remove(temp);
+						}
+					}
+					Point3f.plateSpacesOccupied.remove(Point3f.plateSpacesOccupied.indexOf(gridSpace));
 				}
+			} else if (Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){
+				LettuceList.add(new GameObject("res/lettuce.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
+				System.out.println("lettuce list " + LettuceList.get(0).getCentre().getX() + LettuceList.get(0).getCentre().getY());
+				System.out.println("lettuce list cooliders" + Point3f.lettuceSpacesOccupied.toString());
 			}
-			Point3f.lettuceSpacesOccupied.remove(Point3f.lettuceSpacesOccupied.indexOf(gridSpace));
 			
 			//TODO: Change player sprite to player with lettuce
 
-		//Not holding anything and there is a lettuce bins infront of them
-		} else if (Point3f.lettuceBinSpacesOccupied.contains(gridSpace)){
-			LettuceList.add(new GameObject("res/lettuce.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "lettuce")));
-			System.out.println("lettuce list " + LettuceList.get(0).getCentre().getX() + LettuceList.get(0).getCentre().getY());
-			System.out.println("lettuce list cooliders" + Point3f.lettuceSpacesOccupied.toString());
-		}
 
+
+			//and there is a lettuce infront of them
+
+		
+		}			
 		Controller.getInstance().setKeySpacePressed(false);
 	}
 
@@ -301,6 +330,10 @@ public class Model {
 
 	public CopyOnWriteArrayList<GameObject> getCounters() {
 		return CounterList;
+	}
+
+	public CopyOnWriteArrayList<GameObject> getPlates() {
+		return PlateList;
 	}
 
 	public int getScore() { 

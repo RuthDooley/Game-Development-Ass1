@@ -93,6 +93,7 @@ public class Point3f {
 	public static ArrayList<Integer> lettuceSpacesOccupied = new ArrayList<Integer>();
 	public static ArrayList<Integer> binSpacesOccupied = new ArrayList<Integer>();
 	public static ArrayList<Integer> counterSpacesOccupied = new ArrayList<Integer>();
+	public static ArrayList<Integer> plateSpacesOccupied = new ArrayList<Integer>();
 	//Gets added to the list of all colliders, also gets added to the list of specific assets give its type
 	public static Point3f setPointInit (int x, int y, String type){
 		int spaceID = 0;
@@ -126,6 +127,10 @@ public class Point3f {
 			if (!lettuceSpacesOccupied.contains(spaceID)) 
 				lettuceSpacesOccupied.add(spaceID);
 				break;
+			case "plate":
+				if (!plateSpacesOccupied.contains(spaceID)) 
+					plateSpacesOccupied.add(spaceID);
+					break;
 			default:
 
 				break;

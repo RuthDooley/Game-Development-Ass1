@@ -102,7 +102,7 @@ public class Viewer extends JPanel {
 	    }); 
 
 		gameworld.getBins().forEach((temp) -> {
-			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g);	 
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 250, 250, temp.getTexture(), g);	 
 	    }); 
 
 		gameworld.getCounters().forEach((temp) -> {
@@ -111,6 +111,10 @@ public class Viewer extends JPanel {
 
 		//Drop off
 		drawAsset((int) gameworld.getDeliveryDropOff().getCentre().getX(), (int) gameworld.getDeliveryDropOff().getCentre().getY(), 100, 100, gameworld.getDeliveryDropOff().getTexture(), g);	
+
+		gameworld.getPlates().forEach((temp) -> {
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 250, 250, temp.getTexture(), g);	 
+	    }); 
 
 		gameworld.getLettuce().forEach((temp) -> {
 			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 250, 250, temp.getTexture(), g);	 
