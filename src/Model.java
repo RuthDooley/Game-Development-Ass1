@@ -41,11 +41,11 @@ public class Model {
 	public static GameObject Player;
 	private Controller controller = Controller.getInstance();
 	private static CopyOnWriteArrayList<GameObject> LettuceBinList  = new CopyOnWriteArrayList<GameObject>();	
-	private CopyOnWriteArrayList<GameObject> LettuceList  = new CopyOnWriteArrayList<GameObject>();
+	private static CopyOnWriteArrayList<GameObject> LettuceList  = new CopyOnWriteArrayList<GameObject>();
 	private static CopyOnWriteArrayList<GameObject> TomatoBinList  = new CopyOnWriteArrayList<GameObject>();	
-	private CopyOnWriteArrayList<GameObject> TomatoList  = new CopyOnWriteArrayList<GameObject>();
+	private static CopyOnWriteArrayList<GameObject> TomatoList  = new CopyOnWriteArrayList<GameObject>();
 	private static CopyOnWriteArrayList<GameObject> CucumberBinList  = new CopyOnWriteArrayList<GameObject>();	
-	private CopyOnWriteArrayList<GameObject> CucumberList  = new CopyOnWriteArrayList<GameObject>();
+	private static CopyOnWriteArrayList<GameObject> CucumberList  = new CopyOnWriteArrayList<GameObject>();
 	private static CopyOnWriteArrayList<GameObject> BinList  = new CopyOnWriteArrayList<GameObject>();
 	private static CopyOnWriteArrayList<GameObject> CounterList  = new CopyOnWriteArrayList<GameObject>();	
 	private static CopyOnWriteArrayList<GameObject> PlateList  = new CopyOnWriteArrayList<GameObject>();	
@@ -61,6 +61,7 @@ public class Model {
 
 	public Model() {
 		Player= new GameObject("res/LightningUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(200,300, "player"));
+		// deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(10,1, "dropoff"));
 	}
 
 	public static void gameDesignSetup (int levelNumber){
@@ -68,7 +69,7 @@ public class Model {
 		//TODO: Reset all of the array lists maybe here
 		switch(levelNumber) {
 			case 1:
-				deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,0, "dropoff"));
+				deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,100, "dropoff"));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,0, "lettuceBin")));
 				TomatoBinList.add(new GameObject("res/tomatoBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(400,0, "tomatoBin")));
 				CucumberBinList.add(new GameObject("res/cucumberBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(500,0, "cucumberBin")));
@@ -76,13 +77,16 @@ public class Model {
 				CounterList.add(new GameObject("res/blankSprite.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "counter")));
 				PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "plate")));
 				PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,700, "plate")));
-				timerStart = 5_000;
+				timerStart = 10_000; //This is the time for the level
 				break;
 			case 2:
+				deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,200, "dropoff"));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,300, "lettuceBin")));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,300, "lettuceBin")));
+				// deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(10,1, "dropoff"));
 				break;
 			case 3:
+				deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,100, "dropoff"));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(0,300, "lettuceBin")));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,0, "lettuceBin")));
 				break;
@@ -92,7 +96,39 @@ public class Model {
 	}
 
 	public static void resetTheGame(){
+		//Clear all the arraylists in Model and Point3f
 		LettuceBinList.clear();
+		LettuceList.clear();
+		TomatoBinList.clear();
+		TomatoList.clear();
+		CucumberBinList.clear();
+		CucumberList.clear();
+		BinList.clear();
+		CounterList.clear();
+		PlateList.clear();
+		// deliveryDropOff = null;
+
+		Point3f.spacesOccupied.clear();
+		Point3f.lettuceBinSpacesOccupied.clear();
+		Point3f.tomatoBinSpacesOccupied.clear();
+		Point3f.cucumberBinSpacesOccupied = new ArrayList<Integer>();
+		Point3f.lettuceSpacesOccupied = new ArrayList<Integer>();
+		Point3f.tomatoSpacesOccupied = new ArrayList<Integer>();
+		Point3f.cucumberSpacesOccupied = new ArrayList<Integer>();
+		Point3f.binSpacesOccupied = new ArrayList<Integer>();
+		Point3f.counterSpacesOccupied = new ArrayList<Integer>();
+		Point3f.plateSpacesOccupied = new ArrayList<Integer>();
+
+		//Remove orders
+		OrderNameList.clear();
+		OrderTimeList.clear();
+
+		//Remove the object the player is holding
+		objectPlayerHolding.clear();
+
+		//Reset Score
+		Score = 0;
+
 	}
 	
 	public void gamelogic() throws InterruptedException {

@@ -83,7 +83,7 @@ public class MainWindow {
 
 	//Basic Model-View-Controller pattern 
 	private static void gameloop(int levelNumberSelected) throws InterruptedException { 
-		Model.resetTheGame();
+		//Handel here to trigger end screen if levelNumberSelected here is 4
 		Model.gameDesignSetup(levelNumberSelected);
 		while(true){
 			//Need to keep this in
@@ -96,6 +96,7 @@ public class MainWindow {
 			frame.setTitle("Score =  " + gameworld.getScore()); 
 
 			if (Model.gameFinished){
+				Model.resetTheGame();
 				//Can put in how many stars you got and then trigger this on event listener
 				levelNum ++;
 				break;
