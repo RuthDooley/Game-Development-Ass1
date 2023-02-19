@@ -51,6 +51,8 @@ public class Model {
 	private static CopyOnWriteArrayList<GameObject> CounterList  = new CopyOnWriteArrayList<GameObject>();	
 	private static CopyOnWriteArrayList<GameObject> PlateList  = new CopyOnWriteArrayList<GameObject>();	
 	private static GameObject deliveryDropOff;
+	private static int numberOfPlatesLevel;
+	public static ArrayList<Integer> plateSpawnLocations  = new ArrayList<Integer>();
 	// public static CopyOnWriteArrayList<GameObject> OrderList  = new CopyOnWriteArrayList<GameObject>();
 
 	public static int Score=0; 
@@ -75,9 +77,12 @@ public class Model {
 				CucumberBinList.add(new GameObject("res/cucumberBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(500,0, "cucumberBin")));
 				BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,500, "bin")));
 				CounterList.add(new GameObject("res/blankSprite.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "counter")));
-				PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "plate")));
-				PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,700, "plate")));
+				// PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "plate")));
+				// PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,700, "plate")));
 				timerStart = 120_000; //This is the time for the level
+				numberOfPlatesLevel = 2;
+				plateSpawnLocations.add(600500);
+				plateSpawnLocations.add(700700);
 				break;
 			case 2:
 				deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,200, "dropoff"));
@@ -132,10 +137,21 @@ public class Model {
 	}
 	
 	public void gamelogic() throws InterruptedException {
-		// System.out.println("obkects holding " + Arrays.toString(objectPlayerHolding.toArray()));
+		plateSpawn();
 		playerLogic(); 
 		timerLogic();
 		orderLogic();
+	}
+
+	private void plateSpawn(){
+		if (PlateList.size() < numberOfPlatesLevel && !objectPlayerHolding.contains("plate")){
+			for (Integer temp : plateSpawnLocations){
+				if (!Point3f.plateSpacesOccupied.contains(temp)){
+					PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(temp/1000, temp % 1_000, "plate")));
+					break;
+				}
+			}
+		}
 	}
 
 	private void timerLogic (){
@@ -387,8 +403,6 @@ public class Model {
 	public static void checkOrderExists (int value){
 		if (OrderNameList.contains(value)){
 			objectPlayerHolding.clear();
-			
-			//Respawn platesa
 
 			//Scoring system
 			if (value == 6) {
