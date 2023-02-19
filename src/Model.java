@@ -8,6 +8,7 @@ import util.Point3f;
 import util.Vector3f; 
 
 import java.lang.Math;
+import java.lang.reflect.Array;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit; //For sleep 
 
@@ -60,8 +61,7 @@ public class Model {
 	public static int widthAndHeight = 100;
 
 	public Model() {
-		Player= new GameObject("res/LightningUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(200,300, "player"));
-		// deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(10,1, "dropoff"));
+		Player = new GameObject("res/LightningUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(200,300, "player"));
 	}
 
 	public static void gameDesignSetup (int levelNumber){
@@ -77,7 +77,7 @@ public class Model {
 				CounterList.add(new GameObject("res/blankSprite.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "counter")));
 				PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "plate")));
 				PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,700, "plate")));
-				timerStart = 10_000; //This is the time for the level
+				timerStart = 120_000; //This is the time for the level
 				break;
 			case 2:
 				deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,200, "dropoff"));
@@ -132,6 +132,7 @@ public class Model {
 	}
 	
 	public void gamelogic() throws InterruptedException {
+		// System.out.println("obkects holding " + Arrays.toString(objectPlayerHolding.toArray()));
 		playerLogic(); 
 		timerLogic();
 		orderLogic();
@@ -143,14 +144,11 @@ public class Model {
 		if (Timer == 0){
 			gameFinished = true;
 		}
-
-		//Reduce the timer on all of the orders 
-        System.out.println(Timer);
 	}
 
 	public static ArrayList<Integer> OrderNameList  = new ArrayList<Integer>();
 	public static ArrayList<Integer> OrderTimeList  = new ArrayList<Integer>();
-	public static int orderTimeBeforeExpiry = 10_000; //The amount of time you have before the order expires in milliseconds
+	public static int orderTimeBeforeExpiry = 20_000; //The amount of time you have before the order expires in milliseconds
 	public static void orderLogic(){
 		//Handle adding the orders to the list
 		if (OrderNameList.size() < 3){
@@ -297,9 +295,23 @@ public class Model {
 			}
 			//and theyre infront of the delivery zone
 			else if (gridSpace/1000 == deliveryDropOff.getCentre().getX() && gridSpace % 1_000 == deliveryDropOff.getCentre().getY()){
-				System.out.println("delivery");
-				objectPlayerHolding.clear();
-				Score += 4;
+				if (objectPlayerHolding.contains("lettuce") && objectPlayerHolding.contains("tomato") && objectPlayerHolding.contains("cucumber") && objectPlayerHolding.contains("plate")){
+					checkOrderExists(6);
+				} else if (objectPlayerHolding.contains("lettuce") && objectPlayerHolding.contains("tomato") && !objectPlayerHolding.contains("cucumber") && objectPlayerHolding.contains("plate")) {
+					checkOrderExists(3);
+				} else if (objectPlayerHolding.contains("lettuce") && !objectPlayerHolding.contains("tomato") && objectPlayerHolding.contains("cucumber") && objectPlayerHolding.contains("plate")) {
+					checkOrderExists(4);
+				} else if (!objectPlayerHolding.contains("lettuce") && objectPlayerHolding.contains("tomato") && objectPlayerHolding.contains("cucumber") && objectPlayerHolding.contains("plate")) {
+					checkOrderExists(5);
+				} else if (objectPlayerHolding.contains("lettuce") &&  objectPlayerHolding.contains("plate")) {
+					checkOrderExists(0);
+				} else if (objectPlayerHolding.contains("tomato") &&  objectPlayerHolding.contains("plate")) {
+					checkOrderExists(1);
+				} else if (objectPlayerHolding.contains("cucumber") &&  objectPlayerHolding.contains("plate")) {
+					checkOrderExists(2);
+				} else {
+					System.out.println("invalid order");
+				}
 			}
 
 
@@ -370,6 +382,34 @@ public class Model {
 			}		
 		}			
 		Controller.getInstance().setKeySpacePressed(false);
+	}
+
+	public static void checkOrderExists (int value){
+		if (OrderNameList.contains(value)){
+			objectPlayerHolding.clear();
+			
+			//Respawn platesa
+
+			//Scoring system
+			if (value == 6) {
+				Score += 15;
+			} else if (value >= 3 && value <=5) {
+				Score += 10;
+			} else {
+				Score += 5;
+			}
+
+			//Add the time remaining as well --> Time beofore expiry - (difference between start and end time of the delivery) /1000 and rounded down
+			Score += (Math.round(orderTimeBeforeExpiry - ((int)System.currentTimeMillis() - OrderTimeList.get(OrderNameList.indexOf(value)))) / 1000);
+
+			//System.out.println( "time adding to score " + (Math.round(orderTimeBeforeExpiry - ((int)System.currentTimeMillis() - OrderTimeList.get(OrderNameList.indexOf(value)))) / 1000));
+
+			//remove the order closest to the front from the list
+			removeOrderFromList(OrderNameList.indexOf(value));
+		} else {
+			System.out.println("order does not exist");
+			//TODO update viewer
+		}
 	}
 
 	public static String directPlayerfacing = "up";
