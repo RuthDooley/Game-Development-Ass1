@@ -196,7 +196,7 @@ public class Viewer extends JPanel {
 		g.fillRect(1200,800, 250, 100);
 		g.setColor(Color.BLUE);
 		g.drawRect(1200,800, 250, 100);
-		g.drawString("Timer " + Integer.toString(Model.Timer), 1300, 850);
+		g.drawString("Timer " + Integer.toString(Model.Timer/1000), 1300, 850);
 	}
 
 	public void drawScore (Graphics g){
@@ -228,11 +228,33 @@ public class Viewer extends JPanel {
 					g.drawString("Tomato Salad", 1200, counter + 50);
 					break;
 				case 2:
+					g.drawString("Cucumber Salad", 1200, counter + 50);
+					break;
+				case 3:
 					g.drawString("Lettuce and Tomato Salad", 1200, counter + 50);
+					break;
+				case 4:
+					g.drawString("Lettuce and Cucumber Salad", 1200, counter + 50);
+					break;
+				case 5:
+					g.drawString("Tomato and Cucumber Salad", 1200, counter + 50);
+					break;
+				case 6:
+					g.drawString("Lettuce and Tomato and Cucumber Salad", 1200, counter + 50);
 					break;
 				default:
 					System.out.println("Error in Viewer.drawOrders()");
 			}
+			counter += 100;
+		}
+
+		counter = 100;
+		for (Integer temp : Model.OrderTimeList){
+			g.setColor(Color.BLACK);
+			g.fillRect(1350,counter, 100, 100);
+			g.setColor(Color.GREEN);
+			g.drawRect(1350,counter, 100, 100);
+			g.drawString(Integer.toString(Model.orderTimeBeforeExpiry/1000 - ((int)System.currentTimeMillis() - temp)/1000), 1350, counter + 50);
 			counter += 100;
 		}
 	}

@@ -63,7 +63,6 @@ public class MainWindow {
 		while (true){
 			startGame();
 		}
-
 	} 
 
 	public static void startGame () throws InterruptedException{
@@ -74,7 +73,8 @@ public class MainWindow {
 			canvas.addKeyListener(Controller);    
 			canvas.requestFocusInWindow();   
 
-			startTime = (int)(System.currentTimeMillis()/1000);
+			// startTime = (int)(System.currentTimeMillis()/1000);
+			startTime = (int)System.currentTimeMillis();
 			gameloop(levelNum);	
 
 			frame.getContentPane().removeAll();
@@ -83,6 +83,7 @@ public class MainWindow {
 
 	//Basic Model-View-Controller pattern 
 	private static void gameloop(int levelNumberSelected) throws InterruptedException { 
+		Model.resetTheGame();
 		Model.gameDesignSetup(levelNumberSelected);
 		while(true){
 			//Need to keep this in

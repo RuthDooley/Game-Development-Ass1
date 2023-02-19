@@ -76,7 +76,7 @@ public class Model {
 				CounterList.add(new GameObject("res/blankSprite.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "counter")));
 				PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "plate")));
 				PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,700, "plate")));
-				timerStart = 400;
+				timerStart = 5_000;
 				break;
 			case 2:
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,300, "lettuceBin")));
@@ -90,44 +90,57 @@ public class Model {
 				System.out.println("Error in gameDesignSetup()");
 		}	
 	}
+
+	public static void resetTheGame(){
+		LettuceBinList.clear();
+	}
 	
 	public void gamelogic() throws InterruptedException {
 		playerLogic(); 
 		timerLogic();
-		// orderLogic();
+		orderLogic();
 	}
 
 	private void timerLogic (){
-		Timer = (timerStart - ((int)(System.currentTimeMillis()/1000) - MainWindow.startTime));
+		Timer = (timerStart - ((int)(System.currentTimeMillis()) - MainWindow.startTime));
+		Timer = Math.round(Timer/10) * 10;
 		if (Timer == 0){
 			gameFinished = true;
 		}
 
 		//Reduce the timer on all of the orders 
-        // System.out.println(Timer);
+        System.out.println(Timer);
 	}
 
 	public static ArrayList<Integer> OrderNameList  = new ArrayList<Integer>();
 	public static ArrayList<Integer> OrderTimeList  = new ArrayList<Integer>();
+	public static int orderTimeBeforeExpiry = 10_000; //The amount of time you have before the order expires in milliseconds
 	public static void orderLogic(){
+		//Handle adding the orders to the list
 		if (OrderNameList.size() < 3){
 			getRandomOrder();
-		} 
-		
-		// else if (Timer % 4 == 0 && OrderNameList.size() < 6){
-		// 	getRandomOrder();
-		// }
+		} else if (Timer % 10_000 == 0 && OrderNameList.size() < 6){ //This dictates the freq of the orders coming in can change
+			System.out.println("timer here");
+			getRandomOrder();
+		}
 
-		if (Timer == 390)
-			OrderNameList.remove(0);
-
-		System.out.println(Arrays.toString(OrderNameList.toArray()));
+		//Handeling removing the orders from the list if expired
+		for (Integer temp : OrderTimeList){
+			if (((int)System.currentTimeMillis() - temp) > orderTimeBeforeExpiry){
+				removeOrderFromList(OrderTimeList.indexOf(temp));
+				break;
+			}
+		}
 	}
 
-	public static int orderTime = 30;
+	public static void removeOrderFromList (int indexToRemove){
+		OrderNameList.remove(indexToRemove);
+		OrderTimeList.remove(indexToRemove);
+	}
+
 	public static void getRandomOrder (){
-		OrderNameList.add((int)Math.floor(Math.random() * 3));
-		OrderTimeList.add((int)(System.currentTimeMillis()/1000));
+		OrderNameList.add((int)Math.floor(Math.random() * 6));
+		OrderTimeList.add((int)(System.currentTimeMillis()));
 	}
 
 	public static int gridSpace;
