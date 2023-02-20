@@ -174,7 +174,7 @@ public class Point3f {
 	}
 
 	public static void printColliderArrayList (){
-		System.out.println(spacesOccupied.toString());
+		// System.out.println(spacesOccupied.toString());
 	}
 
 	public static int getGridValue (Point3f coord){

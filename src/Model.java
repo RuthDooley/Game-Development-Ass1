@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import util.GameObject;
@@ -8,9 +6,6 @@ import util.Point3f;
 import util.Vector3f; 
 
 import java.lang.Math;
-import java.lang.reflect.Array;
-import java.net.SocketTimeoutException;
-import java.util.concurrent.TimeUnit; //For sleep 
 
  //For sound
 import java.io.File;
@@ -70,6 +65,7 @@ public class Model {
 	public static int Timer=0; 
 	public static int timerStart = 0;
 	public static int orderTimeBeforeExpiry = 0; //The amount of time you have before the order expires in milliseconds
+	public static int deliveryList = 7; //The number of options in the delivery list
 	public static Boolean gameFinished = false;
 
 	public static int widthAndHeight = 100;
@@ -106,7 +102,8 @@ public class Model {
 
 				//This is the time for the level
 				timerStart = 120_000;
-				orderTimeBeforeExpiry = 30_000;
+				orderTimeBeforeExpiry = 20_000;
+				deliveryList = 4;
 				break;
 			case 2:
 
@@ -192,7 +189,7 @@ public class Model {
 	public static ArrayList<Integer> OrderTimeList  = new ArrayList<Integer>();
 	public static void orderLogic(){
 		//Handle adding the orders to the list
-		if (OrderNameList.size() < 3){
+		if (OrderNameList.size() < 2){
 			getRandomOrder();
 		} else if (Timer % 10_000 == 0 && OrderNameList.size() < 6){ //This dictates the freq of the orders coming in can change
 			getRandomOrder();
@@ -214,7 +211,7 @@ public class Model {
 	}
 
 	public static void getRandomOrder (){
-		OrderNameList.add((int)Math.floor(Math.random() * 7));
+		OrderNameList.add((int)Math.floor(Math.random() * deliveryList));
 		OrderTimeList.add((int)(System.currentTimeMillis()));
 	}
 
@@ -412,14 +409,8 @@ public class Model {
 				} else if (Point3f.tomatoBinSpacesOccupied.contains(gridSpace)){
 					TomatoList.add(new GameObject("res/tomato.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "tomato")));
 				} else if (Point3f.cucumberBinSpacesOccupied.contains(gridSpace)){
-					System.out.println("triggered cucumber");
 					CucumberList.add(new GameObject("res/cucumber.png",100,100,Point3f.setPointInit(gridSpace/1000,gridSpace % 1_000, "cucumber")));
-
-					System.out.println(CucumberList.toArray().toString());
 				}
-				
-				// System.out.println("lettuce list " + LettuceList.get(0).getCentre().getX() + LettuceList.get(0).getCentre().getY());
-				// System.out.println("lettuce list cooliders" + Point3f.lettuceSpacesOccupied.toString());
 			}		
 		}			
 		Controller.getInstance().setKeySpacePressed(false);
@@ -440,8 +431,6 @@ public class Model {
 
 			//Add the time remaining as well --> Time beofore expiry - (difference between start and end time of the delivery) /1000 and rounded down
 			Score += (Math.round(orderTimeBeforeExpiry - ((int)System.currentTimeMillis() - OrderTimeList.get(OrderNameList.indexOf(value)))) / 1000);
-
-			//System.out.println( "time adding to score " + (Math.round(orderTimeBeforeExpiry - ((int)System.currentTimeMillis() - OrderTimeList.get(OrderNameList.indexOf(value)))) / 1000));
 
 			//remove the order closest to the front from the list
 			removeOrderFromList(OrderNameList.indexOf(value));

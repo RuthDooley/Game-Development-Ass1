@@ -46,13 +46,12 @@ SOFTWARE.
  */ 
 
 public class MainWindow {
-	private static  JFrame frame = new JFrame("Game");   // Change to the name of your game 
-	private static   Model gameworld= new Model();
-	private static   Viewer canvas = new  Viewer( gameworld);
-	private static KeyListener Controller =new Controller()  ; 
-	private static   int TargetFPS = 100;
+	private static JFrame frame = new JFrame("Game");   // Change to the name of your game 
+	private static Model gameworld= new Model();
+	private static Viewer canvas = new  Viewer( gameworld);
+	private static KeyListener controller = new Controller()  ; 
+	private static int TargetFPS = 100;
 	public static boolean startGame = false; 
-	private   JLabel BackgroundImageForStartMenu ;
 	public static int startTime = 0;
 	public static int levelNum = 1;
 
@@ -73,7 +72,7 @@ public class MainWindow {
 		canvas.setBackground(new Color(255,255,255)); 
 		frame.add(canvas);  
 
-		canvas.addKeyListener(Controller);    
+		canvas.addKeyListener(controller);    
 		canvas.requestFocusInWindow();   
 
 		startTime = (int)System.currentTimeMillis();
@@ -84,7 +83,6 @@ public class MainWindow {
 	}
 
 	private static void gameloop(int levelNumberSelected) throws InterruptedException, UnsupportedAudioFileException, IOException, LineUnavailableException { 
-		//TODO: Handel here to trigger end screen if levelNumberSelected here is 4
 		if (levelNumberSelected == 4){
 			frame.dispose();    
 			terminatGame = true;
