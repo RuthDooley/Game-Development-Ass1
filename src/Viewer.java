@@ -90,6 +90,10 @@ public class Viewer extends JPanel {
 			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 
 	    }); 
 
+		gameworld.getHoles().forEach((temp) -> {
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 
+	    }); 
+
 		//Drop off
 		drawAsset((int) gameworld.getDeliveryDropOff().getCentre().getX(), (int) gameworld.getDeliveryDropOff().getCentre().getY(), 100, 100, gameworld.getDeliveryDropOff().getTexture(), g, 3, 100, 100);	
 
@@ -151,8 +155,8 @@ public class Viewer extends JPanel {
 					g.setColor(Color.decode("#ebc17f"));
 					g.fillRect(j * Model.widthAndHeight,i * Model.widthAndHeight, Model.widthAndHeight, Model.widthAndHeight);
 				}
-				// g.setColor(Color.BLACK);
-				// g.drawString("[ " + j + " , " + i + " ]", (j * Model.widthAndHeight) + 25, (i * Model.widthAndHeight) + 25);
+				g.setColor(Color.BLACK);
+				g.drawString("[ " + j + " , " + i + " ]", (j * Model.widthAndHeight) + 25, (i * Model.widthAndHeight) + 25);
 			}
 		}
 	}
