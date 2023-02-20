@@ -49,7 +49,7 @@ public class MainWindow {
 	private static   Viewer canvas = new  Viewer( gameworld);
 	private static KeyListener Controller =new Controller()  ; 
 	private static   int TargetFPS = 100;
-	public static boolean startGame= false; 
+	public static boolean startGame = false; 
 	private   JLabel BackgroundImageForStartMenu ;
 	public static int startTime = 0;
 	public static int levelNum = 1;
@@ -73,7 +73,6 @@ public class MainWindow {
 			canvas.addKeyListener(Controller);    
 			canvas.requestFocusInWindow();   
 
-			// startTime = (int)(System.currentTimeMillis()/1000);
 			startTime = (int)System.currentTimeMillis();
 			gameloop(levelNum);	
 
@@ -81,9 +80,8 @@ public class MainWindow {
 			frame.repaint();
 	}
 
-	//Basic Model-View-Controller pattern 
 	private static void gameloop(int levelNumberSelected) throws InterruptedException { 
-		//Handel here to trigger end screen if levelNumberSelected here is 4
+		//TODO: Handel here to trigger end screen if levelNumberSelected here is 4
 		
 		Model.gameDesignSetup(levelNumberSelected);
 		while(true){

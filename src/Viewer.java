@@ -85,9 +85,6 @@ public class Viewer extends JPanel {
 		
 		super.paintComponent(g);
 		CurrentAnimationTime++; // runs animation time step 
-		
-		// drawBackground(g);
-
 		drawGrid(g);
 
 		drawScore(g);
@@ -138,18 +135,6 @@ public class Viewer extends JPanel {
 	    }); 
 	}
 
-	private void drawBackground(Graphics g){
-		File TextureToLoad = new File("res/spacebackground.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
-		try {
-			Image myImage = ImageIO.read(TextureToLoad); 
-			 g.drawImage(myImage, 0,0, 12000, 12000, 0 , 0, 12000, 12000, null); 
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	private void drawAsset(int x, int y, int width, int height, String texture, Graphics g, int animationFrames, int actualPixelWidth, int actualPixelheight){
 		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
 		try {
@@ -167,7 +152,6 @@ public class Viewer extends JPanel {
 			e.printStackTrace();
 		}
 	}
-	
 
 	private void drawPlayer(int x, int y, int width, int height, String texture,Graphics g) { 
 		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
@@ -218,18 +202,11 @@ public class Viewer extends JPanel {
 	}
 
 	public void drawOrders(Graphics g){
-		g.setColor(Color.ORANGE);
-		g.fillRect(1200,0, 235, 100);
-		g.setColor(Color.GREEN);
-		g.drawRect(1200,0, 235, 100);
-		g.drawString("Orders", 1300, 50);
+		drawAsset(1200, 0, 240, 100,"res/orders.png", g, 0, 240, 100);
 
 		int counter = 100;
 		for (Integer temp : Model.OrderNameList){
-			g.setColor(Color.BLACK);
-			g.fillRect(1200,counter, 150, 100);
-			g.setColor(Color.GREEN);
-			g.drawRect(1200,counter, 150, 100);
+			drawAsset(1200, counter, 150, 100,"res/orderBoard.png", g, 0, 150, 100);
 			switch (temp){
 				case 0:
 					g.drawString("Lettuce Salad", 1200, counter + 50);
@@ -260,10 +237,7 @@ public class Viewer extends JPanel {
 
 		counter = 100;
 		for (Integer temp : Model.OrderTimeList){
-			g.setColor(Color.BLACK);
-			g.fillRect(1350,counter, 100, 100);
-			g.setColor(Color.GREEN);
-			g.drawRect(1350,counter, 100, 100);
+			drawAsset(1350, counter - 5, 100, 100,"res/time.png", g, 0, 100, 100);
 			g.drawString(Integer.toString(Model.orderTimeBeforeExpiry/1000 - ((int)System.currentTimeMillis() - temp)/1000), 1350, counter + 50);
 			counter += 100;
 		}
