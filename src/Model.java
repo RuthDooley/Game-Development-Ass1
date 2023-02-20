@@ -71,27 +71,26 @@ public class Model {
 		//TODO: Reset all of the array lists maybe here
 		switch(levelNumber) {
 			case 1:
-				deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,100, "dropoff"));
+				deliveryDropOff = new GameObject("res/deliveryZone.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,100, "dropoff"));
+
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,0, "lettuceBin")));
 				TomatoBinList.add(new GameObject("res/tomatoBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(400,0, "tomatoBin")));
 				CucumberBinList.add(new GameObject("res/cucumberBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(500,0, "cucumberBin")));
 				BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,500, "bin")));
-				CounterList.add(new GameObject("res/blankSprite.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "counter")));
-				// PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "plate")));
-				// PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,700, "plate")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "counter")));
 				timerStart = 120_000; //This is the time for the level
 				numberOfPlatesLevel = 2;
 				plateSpawnLocations.add(600500);
 				plateSpawnLocations.add(700700);
 				break;
 			case 2:
-				deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,200, "dropoff"));
+				deliveryDropOff = new GameObject("res/deliveryZone.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,200, "dropoff"));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,300, "lettuceBin")));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,300, "lettuceBin")));
 				// deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(10,1, "dropoff"));
 				break;
 			case 3:
-				deliveryDropOff = new GameObject("res/Ninja.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,100, "dropoff"));
+				deliveryDropOff = new GameObject("res/deliveryZone.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,100, "dropoff"));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(0,300, "lettuceBin")));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,0, "lettuceBin")));
 				break;
@@ -164,7 +163,7 @@ public class Model {
 
 	public static ArrayList<Integer> OrderNameList  = new ArrayList<Integer>();
 	public static ArrayList<Integer> OrderTimeList  = new ArrayList<Integer>();
-	public static int orderTimeBeforeExpiry = 20_000; //The amount of time you have before the order expires in milliseconds
+	public static int orderTimeBeforeExpiry = 40_000; //The amount of time you have before the order expires in milliseconds
 	public static void orderLogic(){
 		//Handle adding the orders to the list
 		if (OrderNameList.size() < 3){
@@ -178,6 +177,7 @@ public class Model {
 		for (Integer temp : OrderTimeList){
 			if (((int)System.currentTimeMillis() - temp) > orderTimeBeforeExpiry){
 				removeOrderFromList(OrderTimeList.indexOf(temp));
+				Score -= 5;
 				break;
 			}
 		}

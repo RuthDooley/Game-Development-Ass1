@@ -19,6 +19,7 @@ import util.GameObject;
 //For the grid drawing
 import java.awt.Dimension;
 import javax.swing.*;
+import java.awt.BasicStroke;
 
 
 /*
@@ -98,42 +99,42 @@ public class Viewer extends JPanel {
 		drawPlayer((int) gameworld.getPlayer().getCentre().getX(), (int) gameworld.getPlayer().getCentre().getY(), gameworld.getPlayer().getWidth(), gameworld.getPlayer().getHeight(), gameworld.getPlayer().getTexture(), g); 
 
 		gameworld.getLettuceBins().forEach((temp) -> {
-			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 320, 320, temp.getTexture(), g);	 
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 
 	    }); 
 
 		gameworld.getTomatoBins().forEach((temp) -> {
-			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 320, 320, temp.getTexture(), g);	 
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 
 	    }); 
 
 		gameworld.getCucumberBins().forEach((temp) -> {
-			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 320, 320, temp.getTexture(), g);	 
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 
 	    }); 
 
 		gameworld.getBins().forEach((temp) -> {
-			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 250, 250, temp.getTexture(), g);	 
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 
 	    }); 
 
 		gameworld.getCounters().forEach((temp) -> {
-			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g);	 
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 
 	    }); 
 
 		//Drop off
-		drawAsset((int) gameworld.getDeliveryDropOff().getCentre().getX(), (int) gameworld.getDeliveryDropOff().getCentre().getY(), 100, 100, gameworld.getDeliveryDropOff().getTexture(), g);	
+		drawAsset((int) gameworld.getDeliveryDropOff().getCentre().getX(), (int) gameworld.getDeliveryDropOff().getCentre().getY(), 100, 100, gameworld.getDeliveryDropOff().getTexture(), g, 3, 100, 100);	
 
 		gameworld.getPlates().forEach((temp) -> {
-			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 250, 250, temp.getTexture(), g);	 
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 
 	    }); 
 
 		gameworld.getLettuce().forEach((temp) -> {
-			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 250, 250, temp.getTexture(), g);	 
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 
 	    }); 
 
 		gameworld.getTomato().forEach((temp) -> {
-			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 250, 250, temp.getTexture(), g);	 
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 
 	    }); 
 
 		gameworld.getCucumber().forEach((temp) -> {
-			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 250, 250, temp.getTexture(), g);	 
+			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 
 	    }); 
 	}
 
@@ -149,12 +150,17 @@ public class Viewer extends JPanel {
 		}
 	}
 
-	private void drawAsset(int x, int y, int width, int height, String texture, Graphics g){
+	private void drawAsset(int x, int y, int width, int height, String texture, Graphics g, int animationFrames, int actualPixelWidth, int actualPixelheight){
 		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
 		try {
 			Image myImage = ImageIO.read(TextureToLoad); 
-			//64 by 128 
-			 g.drawImage(myImage, x,y, x+width, y+height, 0 , 0, 100, 100, null); 
+
+			if (animationFrames == 0){
+				g.drawImage(myImage, x,y, x+width, y+height, 0 , 0, actualPixelWidth, actualPixelheight, null); 
+			} else {
+				int currentPositionInAnimation= ((int) ((CurrentAnimationTime%(animationFrames * 10)))/10)*32;
+				g.drawImage(myImage, x,y, x+width, y+height, currentPositionInAnimation , 0, currentPositionInAnimation + 32 , 32, null); 
+			}
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -169,7 +175,8 @@ public class Viewer extends JPanel {
 			Image myImage = ImageIO.read(TextureToLoad);
 			//The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time 
 			//remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31  
-			int currentPositionInAnimation= /*((int) ((CurrentAnimationTime%40)/10))**/0; //slows down animation so every 10 frames we get another frame so every 100ms 
+			//int currentPositionInAnimation= ((int) ((CurrentAnimationTime%40)/10))*32; //slows down animation so every 10 frames we get another frame so every 100ms 
+			int currentPositionInAnimation= 0;
 			g.drawImage(myImage, x,y, x+width, y+height, currentPositionInAnimation  , 0, currentPositionInAnimation+31, 32, null); 
 			
 		} catch (IOException e) {
@@ -182,11 +189,14 @@ public class Viewer extends JPanel {
 	public void drawGrid (Graphics g){
 		for (int i = 0; i < 9; i++){
 			for (int j = 0; j < 12; j++){
-				g.setColor(Color.BLACK);
-				g.fillRect(j * Model.widthAndHeight,i * Model.widthAndHeight, Model.widthAndHeight, Model.widthAndHeight);
-				g.setColor(Color.RED);
-				g.drawRect(j * Model.widthAndHeight,i * Model.widthAndHeight, Model.widthAndHeight, Model.widthAndHeight);
-				g.drawString("[ " + j + " , " + i + " ]", (j * Model.widthAndHeight) + 25, (i * Model.widthAndHeight) + 25);
+				if ((j % 2 == 0 && i % 2 != 0) || (j % 2 != 0 && i % 2 == 0) ){
+					g.setColor(Color.WHITE);
+					g.fillRect(j * Model.widthAndHeight,i * Model.widthAndHeight, Model.widthAndHeight, Model.widthAndHeight);
+				} else {
+					g.setColor(Color.decode("#ebc17f"));
+					g.fillRect(j * Model.widthAndHeight,i * Model.widthAndHeight, Model.widthAndHeight, Model.widthAndHeight);
+				}
+				//g.drawString("[ " + j + " , " + i + " ]", (j * Model.widthAndHeight) + 25, (i * Model.widthAndHeight) + 25);
 			}
 		}
 	}
@@ -209,9 +219,9 @@ public class Viewer extends JPanel {
 
 	public void drawOrders(Graphics g){
 		g.setColor(Color.ORANGE);
-		g.fillRect(1200,0, 300, 100);
+		g.fillRect(1200,0, 235, 100);
 		g.setColor(Color.GREEN);
-		g.drawRect(1200,0, 300, 100);
+		g.drawRect(1200,0, 235, 100);
 		g.drawString("Orders", 1300, 50);
 
 		int counter = 100;
