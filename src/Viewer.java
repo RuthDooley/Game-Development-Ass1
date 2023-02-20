@@ -21,33 +21,6 @@ import java.awt.Dimension;
 import javax.swing.*;
 import java.awt.BasicStroke;
 
-
-/*
- * Created by Abraham Campbell on 15/01/2020.
- *   Copyright (c) 2020  Abraham Campbell
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-   
-   (MIT LICENSE ) e.g do what you want with this :-) 
- 
- * Credits: Kelly Charles (2020)
- */ 
 public class Viewer extends JPanel {
 	private int spaceshipDirection=0;
 	private long CurrentAnimationTime= 0; 
@@ -157,9 +130,6 @@ public class Viewer extends JPanel {
 		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
 		try {
 			Image myImage = ImageIO.read(TextureToLoad);
-			//The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time 
-			//remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31  
-			//int currentPositionInAnimation= ((int) ((CurrentAnimationTime%40)/10))*32; //slows down animation so every 10 frames we get another frame so every 100ms 
 			int currentPositionInAnimation= 0;
 			g.drawImage(myImage, x,y, x+width, y+height, currentPositionInAnimation  , 0, currentPositionInAnimation+31, 32, null); 
 			
@@ -186,19 +156,15 @@ public class Viewer extends JPanel {
 	}
 
 	public void drawTimer (Graphics g){
+		drawAsset(1200, 800, 240, 100,"res/timerBorder.png", g, 0, 240, 100);
 		g.setColor(Color.GREEN);
-		g.fillRect(1200,800, 250, 100);
-		g.setColor(Color.BLUE);
-		g.drawRect(1200,800, 250, 100);
 		g.drawString("Timer " + Integer.toString(Model.Timer/1000), 1300, 850);
 	}
 
 	public void drawScore (Graphics g){
-		g.setColor(Color.PINK);
-		g.fillRect(1200,700, 250, 100);
+		drawAsset(1200, 700, 240, 100,"res/score.png", g, 0, 240, 100);
 		g.setColor(Color.GREEN);
-		g.drawRect(1200,700, 250, 100);
-		g.drawString("Score " + Integer.toString(Model.Score), 1300, 750);
+		g.drawString("Score " + Integer.toString(Model.Score), 1200, 750);
 	}
 
 	public void drawOrders(Graphics g){
