@@ -21,6 +21,8 @@ import java.awt.Dimension;
 import javax.swing.*;
 import java.awt.BasicStroke;
 
+import java.awt.Font;
+
 public class Viewer extends JPanel {
 	private int spaceshipDirection=0;
 	private long CurrentAnimationTime= 0; 
@@ -137,7 +139,6 @@ public class Viewer extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		
 	}
 
 	public void drawGrid (Graphics g){
@@ -150,50 +151,68 @@ public class Viewer extends JPanel {
 					g.setColor(Color.decode("#ebc17f"));
 					g.fillRect(j * Model.widthAndHeight,i * Model.widthAndHeight, Model.widthAndHeight, Model.widthAndHeight);
 				}
-				//g.drawString("[ " + j + " , " + i + " ]", (j * Model.widthAndHeight) + 25, (i * Model.widthAndHeight) + 25);
+				// g.setColor(Color.BLACK);
+				// g.drawString("[ " + j + " , " + i + " ]", (j * Model.widthAndHeight) + 25, (i * Model.widthAndHeight) + 25);
 			}
 		}
 	}
 
 	public void drawTimer (Graphics g){
 		drawAsset(1200, 800, 240, 100,"res/timerBorder.png", g, 0, 240, 100);
-		g.setColor(Color.GREEN);
-		g.drawString("Timer " + Integer.toString(Model.Timer/1000), 1300, 850);
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("Arial", Font.BOLD, 20)); 
+		drawAsset(1325, 800, 100, 100, "res/timersmall.png", g, 0, 100, 100);	 
+		g.drawString(Integer.toString(Model.Timer/1000), 1300, 857);
 	}
 
 	public void drawScore (Graphics g){
 		drawAsset(1200, 700, 240, 100,"res/score.png", g, 0, 240, 100);
-		g.setColor(Color.GREEN);
-		g.drawString("Score " + Integer.toString(Model.Score), 1200, 750);
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("Arial", Font.BOLD, 20)); 
+		drawAsset(1325, 700, 100, 100, "res/coin.png", g, 0, 100, 100);	 
+		g.drawString(Integer.toString(Model.Score), 1305, 757);
 	}
 
 	public void drawOrders(Graphics g){
 		drawAsset(1200, 0, 240, 100,"res/orders.png", g, 0, 240, 100);
 
 		int counter = 100;
+		g.setColor(Color.BLACK);
 		for (Integer temp : Model.OrderNameList){
 			drawAsset(1200, counter, 150, 100,"res/orderBoard.png", g, 0, 150, 100);
 			switch (temp){
 				case 0:
-					g.drawString("Lettuce Salad", 1200, counter + 50);
+					drawAsset(1225, counter + 25, 50, 50, "res/plate.png", g, 0, 100, 100);	 
+					drawAsset(1280, counter + 25, 50, 50, "res/lettuce.png", g, 0, 100, 100);	 
 					break;
 				case 1:
-					g.drawString("Tomato Salad", 1200, counter + 50);
+					drawAsset(1225, counter + 25, 50, 50, "res/plate.png", g, 0, 100, 100);	 
+					drawAsset(1280, counter + 25, 50, 50, "res/tomato.png", g, 0, 100, 100);	 
 					break;
 				case 2:
-					g.drawString("Cucumber Salad", 1200, counter + 50);
+					drawAsset(1225, counter + 25, 50, 50, "res/plate.png", g, 0, 100, 100);	 
+					drawAsset(1280, counter + 25, 50, 50, "res/cucumber.png", g, 0, 100, 100);	 
 					break;
 				case 3:
-					g.drawString("Lettuce and Tomato Salad", 1200, counter + 50);
+					drawAsset(1225, counter + 25, 50, 50, "res/plate.png", g, 0, 100, 100);	 
+					drawAsset(1252, counter + 25, 50, 50, "res/lettuce.png", g, 0, 100, 100);
+					drawAsset(1280, counter + 25, 50, 50, "res/tomato.png", g, 0, 100, 100);	 	 
 					break;
 				case 4:
-					g.drawString("Lettuce and Cucumber Salad", 1200, counter + 50);
+					drawAsset(1225, counter + 25, 50, 50, "res/plate.png", g, 0, 100, 100);	 
+					drawAsset(1252, counter + 25, 50, 50, "res/lettuce.png", g, 0, 100, 100);
+					drawAsset(1280, counter + 25, 50, 50, "res/cucumber.png", g, 0, 100, 100);	 
 					break;
 				case 5:
-					g.drawString("Tomato and Cucumber Salad", 1200, counter + 50);
+					drawAsset(1225, counter + 25, 50, 50, "res/plate.png", g, 0, 100, 100);	 
+					drawAsset(1250, counter + 25, 50, 50, "res/tomato.png", g, 0, 100, 100);
+					drawAsset(1280, counter + 25, 50, 50, "res/cucumber.png", g, 0, 100, 100);	 
 					break;
 				case 6:
-					g.drawString("Lettuce and Tomato and Cucumber Salad", 1200, counter + 50);
+					drawAsset(1225, counter + 25, 50, 50, "res/plate.png", g, 0, 100, 100);	 
+					drawAsset(1245, counter + 25, 50, 50, "res/lettuce.png", g, 0, 100, 100);
+					drawAsset(1265, counter + 25, 50, 50, "res/tomato.png", g, 0, 100, 100);
+					drawAsset(1285, counter + 25, 50, 50, "res/cucumber.png", g, 0, 100, 100);	 
 					break;
 				default:
 					System.out.println("Error in Viewer.drawOrders()");
@@ -203,8 +222,15 @@ public class Viewer extends JPanel {
 
 		counter = 100;
 		for (Integer temp : Model.OrderTimeList){
+			g.setColor(Color.BLACK);
+			g.setFont(new Font("Arial", Font.BOLD, 14)); 
 			drawAsset(1350, counter - 5, 100, 100,"res/time.png", g, 0, 100, 100);
-			g.drawString(Integer.toString(Model.orderTimeBeforeExpiry/1000 - ((int)System.currentTimeMillis() - temp)/1000), 1350, counter + 50);
+			String timeRemaining = Integer.toString(Model.orderTimeBeforeExpiry/1000 - ((int)System.currentTimeMillis() - temp)/1000);
+			if (Integer.valueOf(timeRemaining) >= 10){
+				g.drawString(timeRemaining, 1392, counter + 62);
+			} else {
+				g.drawString(timeRemaining, 1397, counter + 62);
+			}
 			counter += 100;
 		}
 	}

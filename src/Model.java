@@ -12,6 +12,17 @@ import java.lang.reflect.Array;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit; //For sleep 
 
+ //For sound
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 
 /*
  * Created by Abraham Campbell on 15/01/2020.
@@ -57,33 +68,49 @@ public class Model {
 
 	public static int Score=0; 
 	public static int Timer=0; 
-	public static int timerStart = 60;
+	public static int timerStart = 0;
+	public static int orderTimeBeforeExpiry = 0; //The amount of time you have before the order expires in milliseconds
 	public static Boolean gameFinished = false;
 
 	public static int widthAndHeight = 100;
+  
 
 	public Model() {
-		Player = new GameObject("res/LightningUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(200,300, "player"));
+		Player = new GameObject("res/LightningUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,400, "player"));
 	}
 
-	public static void gameDesignSetup (int levelNumber){
+	public static void gameDesignSetup (int levelNumber) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
 		gameFinished = false;
-		//TODO: Reset all of the array lists maybe here
 		switch(levelNumber) {
 			case 1:
-				deliveryDropOff = new GameObject("res/deliveryZone.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,100, "dropoff"));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,300, "counter")));
+				BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,400, "bin")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,500, "counter")));
+				
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(400,500, "counter")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(500,500, "counter")));
+				CucumberBinList.add(new GameObject("res/cucumberBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "cucumberBin")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,500, "counter")));
 
-				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,0, "lettuceBin")));
-				TomatoBinList.add(new GameObject("res/tomatoBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(400,0, "tomatoBin")));
-				CucumberBinList.add(new GameObject("res/cucumberBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(500,0, "cucumberBin")));
-				BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,500, "bin")));
-				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "counter")));
-				timerStart = 120_000; //This is the time for the level
-				numberOfPlatesLevel = 2;
-				plateSpawnLocations.add(600500);
-				plateSpawnLocations.add(700700);
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,500, "counter")));
+				TomatoBinList.add(new GameObject("res/tomatoBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,400, "tomatoBin")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,300, "counter")));
+
+				deliveryDropOff = new GameObject("res/deliveryZone.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,300, "dropoff"));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(500,300, "counter")));
+				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,300, "lettuceBin")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,300, "counter")));
+
+				numberOfPlatesLevel = 1;
+				plateSpawnLocations.add(400500);
+
+				//This is the time for the level
+				timerStart = 120_000;
+				orderTimeBeforeExpiry = 30_000;
 				break;
 			case 2:
+
+								// BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,400, "bin")));
 				deliveryDropOff = new GameObject("res/deliveryZone.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,200, "dropoff"));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,300, "lettuceBin")));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,300, "lettuceBin")));
@@ -163,13 +190,11 @@ public class Model {
 
 	public static ArrayList<Integer> OrderNameList  = new ArrayList<Integer>();
 	public static ArrayList<Integer> OrderTimeList  = new ArrayList<Integer>();
-	public static int orderTimeBeforeExpiry = 40_000; //The amount of time you have before the order expires in milliseconds
 	public static void orderLogic(){
 		//Handle adding the orders to the list
 		if (OrderNameList.size() < 3){
 			getRandomOrder();
 		} else if (Timer % 10_000 == 0 && OrderNameList.size() < 6){ //This dictates the freq of the orders coming in can change
-			System.out.println("timer here");
 			getRandomOrder();
 		}
 
@@ -189,7 +214,7 @@ public class Model {
 	}
 
 	public static void getRandomOrder (){
-		OrderNameList.add((int)Math.floor(Math.random() * 6));
+		OrderNameList.add((int)Math.floor(Math.random() * 7));
 		OrderTimeList.add((int)(System.currentTimeMillis()));
 	}
 

@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -54,34 +56,39 @@ public class MainWindow {
 	public static int startTime = 0;
 	public static int levelNum = 1;
 
-	public static void main(String[] args) throws InterruptedException {
+	private static Boolean terminatGame = false;
+	public static void main(String[] args) throws InterruptedException, UnsupportedAudioFileException, IOException, LineUnavailableException {
 		frame.setSize(2000, 1500);  
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   
 		frame.setLayout(null);
 		frame.setVisible(true);  
 
-		while (true){
+		while (!terminatGame){
 			startGame();
 		}
 	} 
 
-	public static void startGame () throws InterruptedException{
-			canvas.setBounds(0, 0, 2000, 1500); 
-			canvas.setBackground(new Color(255,255,255)); 
-			frame.add(canvas);  
+	public static void startGame () throws InterruptedException, UnsupportedAudioFileException, IOException, LineUnavailableException{
+		canvas.setBounds(0, 0, 2000, 1500); 
+		canvas.setBackground(new Color(255,255,255)); 
+		frame.add(canvas);  
 
-			canvas.addKeyListener(Controller);    
-			canvas.requestFocusInWindow();   
+		canvas.addKeyListener(Controller);    
+		canvas.requestFocusInWindow();   
 
-			startTime = (int)System.currentTimeMillis();
-			gameloop(levelNum);	
+		startTime = (int)System.currentTimeMillis();
+		gameloop(levelNum);	
 
-			frame.getContentPane().removeAll();
-			frame.repaint();
+		frame.getContentPane().removeAll();
+		frame.repaint();
 	}
 
-	private static void gameloop(int levelNumberSelected) throws InterruptedException { 
+	private static void gameloop(int levelNumberSelected) throws InterruptedException, UnsupportedAudioFileException, IOException, LineUnavailableException { 
 		//TODO: Handel here to trigger end screen if levelNumberSelected here is 4
+		if (levelNumberSelected == 4){
+			frame.dispose();    
+			terminatGame = true;
+		}
 		
 		Model.gameDesignSetup(levelNumberSelected);
 		while(true){
