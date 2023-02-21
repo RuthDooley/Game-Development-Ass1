@@ -76,7 +76,13 @@ public class MainWindow {
 			frame.setTitle("Score =  " + gameworld.getScore()); 
 
 			if (Model.gameFinished){
+
+
 				Model.resetTheGame();
+				Thread.sleep(5_000);
+
+				Model.Score = 0;
+
 				//Can put in how many stars you got and then trigger this on event listener
 				levelNum ++;
 				break;

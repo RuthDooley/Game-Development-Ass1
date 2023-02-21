@@ -59,7 +59,7 @@ public class Viewer extends JPanel {
 	}
 
 	public void paintComponent(Graphics g) {
-		
+		int starNum;
 		super.paintComponent(g);
 		CurrentAnimationTime++; // runs animation time step 
 		drawGrid(g);
@@ -70,8 +70,24 @@ public class Viewer extends JPanel {
 
 		drawOrders(g);
 		
-		//Player
-		drawAsset((int) gameworld.getPlayer().getCentre().getX(), (int) gameworld.getPlayer().getCentre().getY(),  100, 100, gameworld.getPlayer().getTexture(), g, 3, 32, 32);	
+		if (!Model.gameFinished){
+			//Player
+			drawAsset((int) gameworld.getPlayer().getCentre().getX(), (int) gameworld.getPlayer().getCentre().getY(),  100, 100, gameworld.getPlayer().getTexture(), g, 3, 32, 32);	
+			//Drop off
+			drawAsset((int) gameworld.getDeliveryDropOff().getCentre().getX(), (int) gameworld.getDeliveryDropOff().getCentre().getY(), 100, 100, gameworld.getDeliveryDropOff().getTexture(), g, 3, 100, 100);	
+		} else {
+			if (Model.Score > Model.scoreStars[2])
+				starNum = 3;
+			else if (Model.Score > Model.scoreStars[1])
+				starNum = 2;
+			else if (Model.Score > Model.scoreStars[0])
+				starNum = 1;
+			else 
+				starNum = 0;
+
+			//Score stars
+			drawAsset(450, 390, 300, 120, "res/" + starNum + "Star.png", g, 0, 100, 40);
+		}
 
 		gameworld.getLettuceBins().forEach((temp) -> {
 			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 
@@ -96,9 +112,6 @@ public class Viewer extends JPanel {
 		gameworld.getHoles().forEach((temp) -> {
 			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 
 	    }); 
-
-		//Drop off
-		drawAsset((int) gameworld.getDeliveryDropOff().getCentre().getX(), (int) gameworld.getDeliveryDropOff().getCentre().getY(), 100, 100, gameworld.getDeliveryDropOff().getTexture(), g, 3, 100, 100);	
 
 		gameworld.getPlates().forEach((temp) -> {
 			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 

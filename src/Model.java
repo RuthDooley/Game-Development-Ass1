@@ -47,16 +47,16 @@ public class Model {
 	public static Boolean gameFinished = false;
 
 	public static int widthAndHeight = 100;
-  
+	public static int[] scoreStars = new int[3];
 
 	public Model() {
-		Player = new GameObject("res/playerUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,400, "player"));
 	}
 
 	public static void gameDesignSetup (int levelNumber) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
 		gameFinished = false;
 		switch(levelNumber) {
 			case 1:
+				Player = new GameObject("res/playerUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,400, "player"));
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,300, "counter")));
 				BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,400, "bin")));
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,500, "counter")));
@@ -82,8 +82,14 @@ public class Model {
 				timerStart = 120_000;
 				orderTimeBeforeExpiry = 20_000;
 				deliveryList = 4;
+
+				//This dictates how many stars you get for each level
+				scoreStars[0] = 100;
+				scoreStars[1] = 200;
+				scoreStars[2] = 300;
 				break;
 			case 2:
+				Player = new GameObject("res/playerUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,400, "player"));
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,200, "counter")));
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,300, "counter")));
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,400, "counter")));
@@ -129,8 +135,14 @@ public class Model {
 				timerStart = 120_000;
 				orderTimeBeforeExpiry = 25_000;
 				deliveryList = 7;
+
+				//This dictates how many stars you get for each level
+				scoreStars[0] = 150;
+				scoreStars[1] = 300;
+				scoreStars[2] = 400;
 				break;
 			case 3:
+				Player = new GameObject("res/playerUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,400, "player"));
 				deliveryDropOff = new GameObject("res/deliveryZone.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(1000,100, "dropoff"));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,100, "lettuceBin")));
 				TomatoBinList.add(new GameObject("res/tomatoBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,700, "tomatoBin")));
@@ -167,6 +179,11 @@ public class Model {
 				timerStart = 150_000;
 				orderTimeBeforeExpiry = 30_000;
 				deliveryList = 7;
+
+				//This dictates how many stars you get for each level
+				scoreStars[0] = 150;
+				scoreStars[1] = 300;
+				scoreStars[2] = 400;
 				break;
 			default:
 				System.out.println("Error in gameDesignSetup()");
@@ -204,8 +221,8 @@ public class Model {
 		//Remove the object the player is holding
 		objectPlayerHolding.clear();
 
-		//Reset Score
-		Score = 0;
+		//Remove the plate spawn locations 
+		plateSpawnLocations.clear();
 
 	}
 	
