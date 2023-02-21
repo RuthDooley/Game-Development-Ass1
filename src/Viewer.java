@@ -1,3 +1,5 @@
+//Ruth Dooley 19300753
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -68,7 +70,8 @@ public class Viewer extends JPanel {
 
 		drawOrders(g);
 		
-		drawPlayer((int) gameworld.getPlayer().getCentre().getX(), (int) gameworld.getPlayer().getCentre().getY(), gameworld.getPlayer().getWidth(), gameworld.getPlayer().getHeight(), gameworld.getPlayer().getTexture(), g); 
+		//Player
+		drawAsset((int) gameworld.getPlayer().getCentre().getX(), (int) gameworld.getPlayer().getCentre().getY(),  100, 100, gameworld.getPlayer().getTexture(), g, 3, 32, 32);	
 
 		gameworld.getLettuceBins().forEach((temp) -> {
 			drawAsset((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), 100, 100, temp.getTexture(), g, 0, 100, 100);	 
@@ -130,19 +133,6 @@ public class Viewer extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	private void drawPlayer(int x, int y, int width, int height, String texture,Graphics g) { 
-		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
-		try {
-			Image myImage = ImageIO.read(TextureToLoad);
-			int currentPositionInAnimation= 0;
-			g.drawImage(myImage, x,y, x+width, y+height, currentPositionInAnimation  , 0, currentPositionInAnimation+31, 32, null); 
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
 	}
 
 	public void drawGrid (Graphics g){

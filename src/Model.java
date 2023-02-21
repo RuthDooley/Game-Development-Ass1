@@ -50,7 +50,7 @@ public class Model {
   
 
 	public Model() {
-		Player = new GameObject("res/LightningUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,400, "player"));
+		Player = new GameObject("res/playerUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,400, "player"));
 	}
 
 	public static void gameDesignSetup (int levelNumber) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
@@ -494,7 +494,7 @@ public class Model {
 	private void turningPlayer (String direction){
 		//direction = up, down, left right
 		directPlayerfacing = direction;
-		String location = "res/Lightning" + direction.substring(0, 1).toUpperCase() + direction.substring(1) + ".png";
+		String location = "res/player" + direction.substring(0, 1).toUpperCase() + direction.substring(1) + ".png";
 		Player.setTextureLocation(location);
 	}
 
