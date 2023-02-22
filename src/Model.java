@@ -79,7 +79,7 @@ public class Model {
 				plateSpawnLocations.add(400500);
 
 				//This is the time for the level
-				timerStart = 3_000;
+				timerStart = 30_000;
 				orderTimeBeforeExpiry = 20_000;
 				deliveryList = 4;
 
@@ -226,7 +226,7 @@ public class Model {
 
 	}
 	
-	public void gamelogic() throws InterruptedException {
+	public void gamelogic() throws InterruptedException, LineUnavailableException, IOException, UnsupportedAudioFileException {
 		plateSpawn();
 		playerLogic(); 
 		timerLogic();
@@ -283,7 +283,7 @@ public class Model {
 	}
 
 	public static int gridSpace;
-	private void playerLogic() throws InterruptedException{
+	private void playerLogic() throws InterruptedException, LineUnavailableException, IOException, UnsupportedAudioFileException{
 		if(Controller.getInstance().isKeyAPressed()){
 			actionOnDirectionKeyStroke("left");
 		}
@@ -360,7 +360,7 @@ public class Model {
 	}
 
 	public static ArrayList<String> objectPlayerHolding  = new ArrayList<String>();
-	private void actionOnSpaceStroke() throws InterruptedException{
+	private void actionOnSpaceStroke() throws InterruptedException, LineUnavailableException, IOException, UnsupportedAudioFileException{
 		gridSpace = spaceInfrontOfPlayer();
 
 		//If player is holding something ie. lettuce
@@ -483,7 +483,7 @@ public class Model {
 		Controller.getInstance().setKeySpacePressed(false);
 	}
 
-	public static void checkOrderExists (int value){
+	public static void checkOrderExists (int value) throws LineUnavailableException, IOException, UnsupportedAudioFileException, InterruptedException{
 		if (OrderNameList.contains(value)){
 			objectPlayerHolding.clear();
 
@@ -501,9 +501,11 @@ public class Model {
 
 			//remove the order closest to the front from the list
 			removeOrderFromList(OrderNameList.indexOf(value));
+
+			//Play the sound
+			Music.playRecieveCoin();
 		} else {
 			System.out.println("order does not exist");
-			//TODO update viewer
 		}
 	}
 
