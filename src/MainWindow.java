@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import util.Point3f;
 import util.UnitTests;
 
+
 public class MainWindow {
 	private static JFrame frame = new JFrame("Game");   // Change to the name of your game 
 	private static Model gameworld= new Model();
@@ -60,12 +61,8 @@ public class MainWindow {
 
 	private static void gameloop(int levelNumberSelected) throws InterruptedException, UnsupportedAudioFileException, IOException, LineUnavailableException { 
 		// Music.pla("res/overallmusic.wav", true);
-		Music.playOverall();
-		if (levelNumberSelected == 4){
-			frame.dispose();    
-			terminatGame = true;
-		}
-		
+
+		Model.musicPlayer("res/overallmusic.wav", true);
 		Model.gameDesignSetup(levelNumberSelected);
 		while(true){
 			//Need to keep this in

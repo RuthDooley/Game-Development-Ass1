@@ -20,6 +20,17 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+//Music
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+  
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 public class Model {
 	
 	public static GameObject Player;
@@ -503,7 +514,9 @@ public class Model {
 			removeOrderFromList(OrderNameList.indexOf(value));
 
 			//Play the sound
-			Music.playRecieveCoin();
+			musicPlayer("res/coin.wav", false);
+			// Music.changeAudio("res/coin.wav", false);
+			// Music.clip.start();
 		} else {
 			System.out.println("order does not exist");
 		}
@@ -592,5 +605,20 @@ public class Model {
 
 	public int getScore() { 
 		return Score;
+	}
+
+	public static Clip clip;
+	public static void musicPlayer(String pathName, Boolean keepLooping) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(pathName).getAbsoluteFile());
+        try {
+            clip = AudioSystem.getClip();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+        clip.open(audioInputStream);
+		if (keepLooping)
+        	clip.loop(Clip.LOOP_CONTINUOUSLY);
+
+        clip.start();
 	}
 }
