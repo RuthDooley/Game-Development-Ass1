@@ -61,8 +61,9 @@ public class MainWindow {
 
 	private static void gameloop(int levelNumberSelected) throws InterruptedException, UnsupportedAudioFileException, IOException, LineUnavailableException { 
 
-		if (levelNumberSelected == 4){
-			frame.dispose();  
+		if (levelNum == 4){
+			//Game end
+			System.exit(0);
 			Model.backgroundClip.stop();
 			Model.backgroundClip.close();
 		}
