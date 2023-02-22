@@ -79,7 +79,7 @@ public class Model {
 				plateSpawnLocations.add(400500);
 
 				//This is the time for the level
-				timerStart = 120_000;
+				timerStart = 3_000;
 				orderTimeBeforeExpiry = 20_000;
 				deliveryList = 4;
 

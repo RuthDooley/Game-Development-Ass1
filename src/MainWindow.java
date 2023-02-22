@@ -59,6 +59,7 @@ public class MainWindow {
 	}
 
 	private static void gameloop(int levelNumberSelected) throws InterruptedException, UnsupportedAudioFileException, IOException, LineUnavailableException { 
+		Music.playOverall();
 		if (levelNumberSelected == 4){
 			frame.dispose();    
 			terminatGame = true;
@@ -66,7 +67,6 @@ public class MainWindow {
 		
 		Model.gameDesignSetup(levelNumberSelected);
 		while(true){
-
 			//Need to keep this in
 			int TimeBetweenFrames =  1000 / TargetFPS;
 			long FrameCheck = System.currentTimeMillis() + (long) TimeBetweenFrames; 
