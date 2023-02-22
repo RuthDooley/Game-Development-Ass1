@@ -20,6 +20,9 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+//Overall music from https://www.fesliyanstudios.com/royalty-free-music/downloads-c/8-bit-music/6  
+//Failure, coin, crumple, error, failure and victory sound effects from https://pixabay.com/sound-effects/search/failure/?manual_search=1&order=None 
+
 //Music
 import java.io.File;
 import java.io.IOException;
@@ -61,6 +64,7 @@ public class Model {
 	public static int[] scoreStars = new int[3];
 
 	public Model() {
+		// Player = new GameObject("res/playerUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,400, "player"));
 	}
 
 	public static void gameDesignSetup (int levelNumber) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
@@ -90,7 +94,7 @@ public class Model {
 				plateSpawnLocations.add(400500);
 
 				//This is the time for the level
-				timerStart = 30_000;
+				timerStart = 20_000;
 				orderTimeBeforeExpiry = 20_000;
 				deliveryList = 4;
 
@@ -316,7 +320,7 @@ public class Model {
 		}
 	}
 
-	private void actionOnDirectionKeyStroke (String direction){
+	private void actionOnDirectionKeyStroke (String direction) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
 		//Turn the player
 		turningPlayer(direction);
 
@@ -367,7 +371,12 @@ public class Model {
 			
 			gridSpace = Point3f.getGridValue(Player.getCentre());
 			Point3f.addCollider(gridSpace);
-		}
+		} 
+		//Can add this in but I don't like how it runs
+		// else {
+		// 	//Invalid move
+		// 	musicPlayer("res/error.wav", false);
+		// }
 	}
 
 	public static ArrayList<String> objectPlayerHolding  = new ArrayList<String>();
@@ -378,6 +387,7 @@ public class Model {
 		if (objectPlayerHolding.size() > 0){ 
 			//and they are in front of a bin
 			if (Point3f.binSpacesOccupied.contains(gridSpace)){
+				musicPlayer("res/crumple.wav", false);
 				System.out.println("here this is a bin");
 				if (objectPlayerHolding.contains("plate")){
 					objectPlayerHolding.clear();
@@ -515,9 +525,8 @@ public class Model {
 
 			//Play the sound
 			musicPlayer("res/coin.wav", false);
-			// Music.changeAudio("res/coin.wav", false);
-			// Music.clip.start();
 		} else {
+			musicPlayer("res/wrong.wav", false);
 			System.out.println("order does not exist");
 		}
 	}
@@ -607,6 +616,7 @@ public class Model {
 		return Score;
 	}
 
+	public static Clip backgroundClip;
 	public static Clip clip;
 	public static void musicPlayer(String pathName, Boolean keepLooping) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(pathName).getAbsoluteFile());
@@ -621,4 +631,26 @@ public class Model {
 
         clip.start();
 	}
+
+	public static void startBackgroundMusic () throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+		AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("res/overallmusic.wav").getAbsoluteFile());
+        try {
+            backgroundClip = AudioSystem.getClip();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+        backgroundClip.open(audioInputStream);
+        backgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
+        backgroundClip.start();
+	}
+
+	public static void musicStop() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        clip.stop();
+        clip.close();
+    }
+
+	public static void overallMusicStop() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        clip.stop();
+        clip.close();
+    }
 }

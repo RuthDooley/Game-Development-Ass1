@@ -62,7 +62,7 @@ public class MainWindow {
 	private static void gameloop(int levelNumberSelected) throws InterruptedException, UnsupportedAudioFileException, IOException, LineUnavailableException { 
 		// Music.pla("res/overallmusic.wav", true);
 
-		Model.musicPlayer("res/overallmusic.wav", true);
+		Model.startBackgroundMusic();
 		Model.gameDesignSetup(levelNumberSelected);
 		while(true){
 			//Need to keep this in
@@ -76,14 +76,18 @@ public class MainWindow {
 
 			if (Model.gameFinished){
 				Model.resetTheGame();
+				Model.backgroundClip.stop();
+				Model.backgroundClip.close();
+				if (Model.Score > Model.scoreStars[0]){
+					levelNum ++;
+					Model.musicPlayer("res/victory.wav", false);
+				} else {
+					Model.musicPlayer("res/failure.wav", false);
+				}
 				Thread.sleep(5_000);
 
-				Music.stop();
-
 				Model.Score = 0;
-
-				//Can put in how many stars you got and then trigger this on event listener
-				levelNum ++;
+				
 				break;
 			}
 		}
