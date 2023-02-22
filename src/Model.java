@@ -225,6 +225,7 @@ public class Model {
 
 		//Remove the object the player is holding
 		objectPlayerHolding.clear();
+		objectPlayer1Holding.clear();
 
 		//Remove the plate spawn locations 
 		plateSpawnLocations.clear();
@@ -594,6 +595,8 @@ public class Model {
 		}			
 		Controller.getInstance().setKeyFPressed(false);
 	}
+
+	public static ArrayList<String> objectPlayer1Holding  = new ArrayList<String>();
 
 	public static void checkOrderExists (int value) throws LineUnavailableException, IOException, UnsupportedAudioFileException, InterruptedException{
 		if (OrderNameList.contains(value)){
