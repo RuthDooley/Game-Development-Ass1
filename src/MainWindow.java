@@ -77,9 +77,10 @@ public class MainWindow {
 			frame.setTitle("Score =  " + gameworld.getScore()); 
 
 			if (Model.gameFinished){
-
 				Model.resetTheGame();
 				Thread.sleep(5_000);
+
+				Music.stop();
 
 				Model.Score = 0;
 
