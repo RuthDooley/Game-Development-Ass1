@@ -99,7 +99,7 @@ public class Model {
 				deliveryList = 4;
 
 				//This dictates how many stars you get for each level
-				scoreStars[0] = -1;
+				scoreStars[0] = 100;
 				scoreStars[1] = 200;
 				scoreStars[2] = 300;
 				break;
@@ -152,7 +152,7 @@ public class Model {
 				deliveryList = 7;
 
 				//This dictates how many stars you get for each level
-				scoreStars[0] = -1;
+				scoreStars[0] = 100;
 				scoreStars[1] = 175;
 				scoreStars[2] = 250;
 				break;
@@ -196,7 +196,7 @@ public class Model {
 				deliveryList = 7;
 
 				//This dictates how many stars you get for each level
-				scoreStars[0] = -1;
+				scoreStars[0] = 100;
 				scoreStars[1] = 175;
 				scoreStars[2] = 250;
 				break;
