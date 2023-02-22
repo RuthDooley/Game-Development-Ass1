@@ -241,7 +241,10 @@ public class Model {
 	}
 
 	private void plateSpawn(){
-		if (PlateList.size() < numberOfPlatesLevel && !objectPlayerHolding.contains("plate")){
+		int plateCount = 0;
+		if (objectPlayerHolding.contains("plate")) plateCount++;
+		if (objectPlayer1Holding.contains("plate")) plateCount++;
+		if (PlateList.size() < numberOfPlatesLevel - plateCount){
 			for (Integer temp : plateSpawnLocations){
 				if (!Point3f.plateSpacesOccupied.contains(temp)){
 					PlateList.add(new GameObject("res/plate.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(temp/1000, temp % 1_000, "plate")));
@@ -333,7 +336,7 @@ public class Model {
 		
 		if(Controller.getInstance().isKeyLPressed()){
 			System.out.println("here5");
-			// actionOnSpaceStroke();
+			actionOnSpaceStroke1();
 		}
 	}
 
@@ -473,7 +476,7 @@ public class Model {
 
 	public static ArrayList<String> objectPlayerHolding  = new ArrayList<String>();
 	private void actionOnSpaceStroke() throws InterruptedException, LineUnavailableException, IOException, UnsupportedAudioFileException{
-		gridSpace = spaceInfrontOfPlayer();
+		gridSpace = spaceInfrontOfPlayer(0);
 
 		//If player is holding something ie. lettuce
 		if (objectPlayerHolding.size() > 0){ 
@@ -597,6 +600,129 @@ public class Model {
 	}
 
 	public static ArrayList<String> objectPlayer1Holding  = new ArrayList<String>();
+	private void actionOnSpaceStroke1() throws InterruptedException, LineUnavailableException, IOException, UnsupportedAudioFileException{
+		gridSpace1 = spaceInfrontOfPlayer(1);
+
+		//If player is holding something ie. lettuce
+		if (objectPlayer1Holding.size() > 0){ 
+			//and they are in front of a bin
+			if (Point3f.binSpacesOccupied.contains(gridSpace1)){
+				musicPlayer("res/crumple.wav", false);
+				System.out.println("here this is a bin");
+				if (objectPlayer1Holding.contains("plate")){
+					objectPlayer1Holding.clear();
+					objectPlayer1Holding.add("plate");
+				} else {
+					objectPlayer1Holding.clear();
+				}
+			}
+			//and they are in front of a counter or lettuce bin
+			else if (Point3f.counterSpacesOccupied.contains(gridSpace1) || Point3f.lettuceBinSpacesOccupied.contains(gridSpace1) || Point3f.cucumberBinSpacesOccupied.contains(gridSpace1) || Point3f.tomatoBinSpacesOccupied.contains(gridSpace1)){			
+				//Add new lettuce poistion to the counter space ie. the space infront of the player 
+				if (objectPlayer1Holding.contains("lettuce") && !Point3f.lettuceSpacesOccupied.contains(gridSpace1)){ //Check that they are holding a lettuce and not going to put it on another lettuce
+					LettuceList.add(new GameObject("res/lettuce.png",100,100,Point3f.setPointInit(gridSpace1/1000,gridSpace1 % 1_000, "lettuce")));
+					objectPlayer1Holding.remove(objectPlayer1Holding.indexOf("lettuce"));
+				}
+
+				if (objectPlayer1Holding.contains("tomato") && !Point3f.tomatoSpacesOccupied.contains(gridSpace1)){
+					TomatoList.add(new GameObject("res/tomato.png",100,100,Point3f.setPointInit(gridSpace1/1000,gridSpace1 % 1_000, "tomato")));
+					objectPlayer1Holding.remove(objectPlayer1Holding.indexOf("tomato"));
+				}
+
+				if (objectPlayer1Holding.contains("cucumber") && !Point3f.cucumberSpacesOccupied.contains(gridSpace1)){
+					CucumberList.add(new GameObject("res/cucumber.png",100,100,Point3f.setPointInit(gridSpace1/1000,gridSpace1 % 1_000, "cucumber")));
+					objectPlayer1Holding.remove(objectPlayer1Holding.indexOf("cucumber"));
+				}
+
+				if (objectPlayer1Holding.contains("plate") && !Point3f.plateSpacesOccupied.contains(gridSpace1)){
+					PlateList.add(new GameObject("res/plate.png",100,100,Point3f.setPointInit(gridSpace1/1000,gridSpace1 % 1_000, "plate")));
+					objectPlayer1Holding.remove(objectPlayer1Holding.indexOf("plate"));
+				}
+			}
+			//and theyre infront of the delivery zone
+			else if (gridSpace1/1000 == deliveryDropOff.getCentre().getX() && gridSpace1 % 1_000 == deliveryDropOff.getCentre().getY()){
+				if (objectPlayer1Holding.contains("lettuce") && objectPlayer1Holding.contains("tomato") && objectPlayer1Holding.contains("cucumber") && objectPlayer1Holding.contains("plate")){
+					checkOrderExists(6);
+				} else if (objectPlayer1Holding.contains("lettuce") && objectPlayer1Holding.contains("tomato") && !objectPlayer1Holding.contains("cucumber") && objectPlayer1Holding.contains("plate")) {
+					checkOrderExists(3);
+				} else if (objectPlayer1Holding.contains("lettuce") && !objectPlayer1Holding.contains("tomato") && objectPlayer1Holding.contains("cucumber") && objectPlayer1Holding.contains("plate")) {
+					checkOrderExists(4);
+				} else if (!objectPlayer1Holding.contains("lettuce") && objectPlayer1Holding.contains("tomato") && objectPlayer1Holding.contains("cucumber") && objectPlayer1Holding.contains("plate")) {
+					checkOrderExists(5);
+				} else if (objectPlayer1Holding.contains("lettuce") &&  objectPlayer1Holding.contains("plate")) {
+					checkOrderExists(0);
+				} else if (objectPlayer1Holding.contains("tomato") &&  objectPlayer1Holding.contains("plate")) {
+					checkOrderExists(1);
+				} else if (objectPlayer1Holding.contains("cucumber") &&  objectPlayer1Holding.contains("plate")) {
+					checkOrderExists(2);
+				} else {
+					System.out.println("invalid order");
+				}
+			}
+
+
+		//Not holding soemthing ...
+		} else {
+			//and there is a lettuce or plate etc. infront of them
+			if (Point3f.lettuceSpacesOccupied.contains(gridSpace1) || Point3f.plateSpacesOccupied.contains(gridSpace1) || Point3f.tomatoSpacesOccupied.contains(gridSpace1) || Point3f.cucumberSpacesOccupied.contains(gridSpace1)){
+				if (Point3f.lettuceSpacesOccupied.contains(gridSpace1)){
+					objectPlayer1Holding.add("lettuce");
+
+					//Lettuce position removed from the lettuce array and removed from the lettuce collisions
+					for (GameObject temp : LettuceList){
+						if (temp.getCentre().getX() == gridSpace1/1000 && temp.getCentre().getY() == gridSpace1%1000){
+							LettuceList.remove(temp);
+						}
+					}
+					Point3f.lettuceSpacesOccupied.remove(Point3f.lettuceSpacesOccupied.indexOf(gridSpace1));
+				}	
+				
+				if (Point3f.tomatoSpacesOccupied.contains(gridSpace1)){
+					objectPlayer1Holding.add("tomato");
+					for (GameObject temp : TomatoList){
+						if (temp.getCentre().getX() == gridSpace1/1000 && temp.getCentre().getY() == gridSpace1%1000){
+							TomatoList.remove(temp);
+						}
+					}
+					Point3f.tomatoSpacesOccupied.remove(Point3f.tomatoSpacesOccupied.indexOf(gridSpace1));
+				}	
+
+				if (Point3f.cucumberSpacesOccupied.contains(gridSpace1)){
+					objectPlayer1Holding.add("cucumber");
+
+					//Lettuce position removed from the lettuce array and removed from the lettuce collisions
+					for (GameObject temp : CucumberList){
+						if (temp.getCentre().getX() == gridSpace1/1000 && temp.getCentre().getY() == gridSpace1%1000){
+							CucumberList.remove(temp);
+						}
+					}
+					Point3f.cucumberSpacesOccupied.remove(Point3f.cucumberSpacesOccupied.indexOf(gridSpace1));
+				}	
+
+				if (Point3f.plateSpacesOccupied.contains(gridSpace1)){
+					objectPlayer1Holding.add("plate");
+
+					//Lettuce position removed from the lettuce array and removed from the lettuce collisions
+					for (GameObject temp : PlateList){
+						if (temp.getCentre().getX() == gridSpace1/1000 && temp.getCentre().getY() == gridSpace1%1000){
+							PlateList.remove(temp);
+						}
+					}
+					Point3f.plateSpacesOccupied.remove(Point3f.plateSpacesOccupied.indexOf(gridSpace1));
+				}
+				//If theres not those but lettuce bin or other veg bin instead
+			} else if (Point3f.lettuceBinSpacesOccupied.contains(gridSpace1) || Point3f.tomatoBinSpacesOccupied.contains(gridSpace1) || Point3f.cucumberBinSpacesOccupied.contains(gridSpace1)){
+				if (Point3f.lettuceBinSpacesOccupied.contains(gridSpace1)){
+					LettuceList.add(new GameObject("res/lettuce.png",100,100,Point3f.setPointInit(gridSpace1/1000,gridSpace1 % 1_000, "lettuce")));
+				} else if (Point3f.tomatoBinSpacesOccupied.contains(gridSpace1)){
+					TomatoList.add(new GameObject("res/tomato.png",100,100,Point3f.setPointInit(gridSpace1/1000,gridSpace1 % 1_000, "tomato")));
+				} else if (Point3f.cucumberBinSpacesOccupied.contains(gridSpace1)){
+					CucumberList.add(new GameObject("res/cucumber.png",100,100,Point3f.setPointInit(gridSpace1/1000,gridSpace1 % 1_000, "cucumber")));
+				}
+			}		
+		}			
+		Controller.getInstance().setKeyLPressed(false);
+	}
 
 	public static void checkOrderExists (int value) throws LineUnavailableException, IOException, UnsupportedAudioFileException, InterruptedException{
 		if (OrderNameList.contains(value)){
@@ -625,13 +751,19 @@ public class Model {
 		}
 	}
 
-	private int spaceInfrontOfPlayer (){
+	private int spaceInfrontOfPlayer (int playerNum){
 		//Find the position of the player
-		int gridSpace;
-		gridSpace = Point3f.getGridValue(Player.getCentre());
-
+		int gridSpace; String switchCase;
+		if (playerNum == 0){
+			gridSpace = Point3f.getGridValue(Player.getCentre());
+			switchCase = directPlayerfacing;
+		} else {
+			gridSpace = Point3f.getGridValue(Player1.getCentre());
+			switchCase = directPlayer1facing;
+		}
 		//Adjust to find the space infront of them
-		switch (directPlayerfacing){
+
+		switch (switchCase){
 			case "up":
 				gridSpace -= 100;
 				break;
