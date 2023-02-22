@@ -94,12 +94,12 @@ public class Model {
 				plateSpawnLocations.add(400500);
 
 				//This is the time for the level
-				timerStart = 23_000;
+				timerStart = 5_000;
 				orderTimeBeforeExpiry = 20_000;
 				deliveryList = 4;
 
 				//This dictates how many stars you get for each level
-				scoreStars[0] = 100;
+				scoreStars[0] = -1;
 				scoreStars[1] = 200;
 				scoreStars[2] = 300;
 				break;
@@ -147,14 +147,14 @@ public class Model {
 				plateSpawnLocations.add(100500);
 
 				//This is the time for the level
-				timerStart = 120_000;
+				timerStart = 5_000;
 				orderTimeBeforeExpiry = 25_000;
 				deliveryList = 7;
 
 				//This dictates how many stars you get for each level
-				scoreStars[0] = 150;
-				scoreStars[1] = 300;
-				scoreStars[2] = 400;
+				scoreStars[0] = -1;
+				scoreStars[1] = 175;
+				scoreStars[2] = 250;
 				break;
 			case 3:
 				Player = new GameObject("res/playerUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,400, "player"));
@@ -191,14 +191,14 @@ public class Model {
 
 				
 				//This is the time for the level
-				timerStart = 150_000;
+				timerStart = 5_000;
 				orderTimeBeforeExpiry = 30_000;
 				deliveryList = 7;
 
 				//This dictates how many stars you get for each level
-				scoreStars[0] = 150;
-				scoreStars[1] = 300;
-				scoreStars[2] = 400;
+				scoreStars[0] = -1;
+				scoreStars[1] = 175;
+				scoreStars[2] = 250;
 				break;
 			default:
 				System.out.println("Error in gameDesignSetup()");

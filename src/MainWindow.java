@@ -60,7 +60,12 @@ public class MainWindow {
 	}
 
 	private static void gameloop(int levelNumberSelected) throws InterruptedException, UnsupportedAudioFileException, IOException, LineUnavailableException { 
-		// Music.pla("res/overallmusic.wav", true);
+
+		if (levelNumberSelected == 4){
+			frame.dispose();  
+			Model.backgroundClip.stop();
+			Model.backgroundClip.close();
+		}
 
 		Model.startBackgroundMusic();
 		Model.gameDesignSetup(levelNumberSelected);
