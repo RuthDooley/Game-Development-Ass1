@@ -66,6 +66,7 @@ public class MainWindow {
 		
 		Model.gameDesignSetup(levelNumberSelected);
 		while(true){
+
 			//Need to keep this in
 			int TimeBetweenFrames =  1000 / TargetFPS;
 			long FrameCheck = System.currentTimeMillis() + (long) TimeBetweenFrames; 
@@ -76,7 +77,6 @@ public class MainWindow {
 			frame.setTitle("Score =  " + gameworld.getScore()); 
 
 			if (Model.gameFinished){
-
 
 				Model.resetTheGame();
 				Thread.sleep(5_000);

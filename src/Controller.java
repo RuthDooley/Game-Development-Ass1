@@ -137,7 +137,5 @@ public class Controller implements KeyListener {
 
 	public void setKeySpacePressed(boolean keySpacePressed) {
 		KeySpacePressed = keySpacePressed;
-	} 
-	
-	 
+	}
 }
