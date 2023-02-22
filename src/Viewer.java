@@ -26,7 +26,6 @@ import java.awt.BasicStroke;
 import java.awt.Font;
 
 public class Viewer extends JPanel {
-	private int spaceshipDirection=0;
 	private long CurrentAnimationTime= 0; 
 	
 	Model gameworld =new Model(); 

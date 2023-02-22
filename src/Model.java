@@ -36,7 +36,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Model {
 	
-	public static GameObject Player;
+	private static GameObject Player;
 	private Controller controller = Controller.getInstance();
 	private static CopyOnWriteArrayList<GameObject> LettuceBinList  = new CopyOnWriteArrayList<GameObject>();	
 	private static CopyOnWriteArrayList<GameObject> LettuceList  = new CopyOnWriteArrayList<GameObject>();
