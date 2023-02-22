@@ -94,7 +94,7 @@ public class Model {
 				plateSpawnLocations.add(400500);
 
 				//This is the time for the level
-				timerStart = 20_000;
+				timerStart = 23_000;
 				orderTimeBeforeExpiry = 20_000;
 				deliveryList = 4;
 
@@ -269,7 +269,7 @@ public class Model {
 
 	public static ArrayList<Integer> OrderNameList  = new ArrayList<Integer>();
 	public static ArrayList<Integer> OrderTimeList  = new ArrayList<Integer>();
-	public static void orderLogic(){
+	public static void orderLogic() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
 		//Handle adding the orders to the list
 		if (OrderNameList.size() < 2){
 			getRandomOrder();
@@ -280,8 +280,9 @@ public class Model {
 		//Handeling removing the orders from the list if expired
 		for (Integer temp : OrderTimeList){
 			if (((int)System.currentTimeMillis() - temp) > orderTimeBeforeExpiry){
+				musicPlayer("res/loseOrder.wav", false);
 				removeOrderFromList(OrderTimeList.indexOf(temp));
-				Score -= 5;
+				Score -= 10;
 				break;
 			}
 		}
