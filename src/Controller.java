@@ -8,7 +8,13 @@ public class Controller implements KeyListener {
 	   private static boolean KeySPressed= false;
 	   private static boolean KeyDPressed= false;
 	   private static boolean KeyWPressed= false;
-	   private static boolean KeySpacePressed= false;
+	   private static boolean KeyFPressed= false;
+
+	   private static boolean KeyHPressed= false;
+	   private static boolean KeyJPressed= false;
+	   private static boolean KeyKPressed= false;
+	   private static boolean KeyUPressed= false;
+	   private static boolean KeyLPressed= false;
 	   
 	   private static final Controller instance = new Controller();
 	   
@@ -34,9 +40,15 @@ public class Controller implements KeyListener {
 			case 's':setKeySPressed(true);break;
 			case 'w':setKeyWPressed(true);break;
 			case 'd':setKeyDPressed(true);break;
-			case ' ':setKeySpacePressed(true);break;   
+			case 'f':setKeyFPressed(true);break;   
+
+			case 'h':setKeyHPressed(true);break;  
+			case 'j':setKeyJPressed(true);break;
+			case 'u':setKeyUPressed(true);break;
+			case 'k':setKeyKPressed(true);break;
+			case 'l':setKeyLPressed(true);break;  
 		    default:
-		    	//System.out.println("Controller test:  Unknown key pressed");
+		    	System.out.println("Controller test:  Unknown key pressed");
 		        break;
 		}  
 		
@@ -53,7 +65,14 @@ public class Controller implements KeyListener {
 			case 's':setKeySPressed(false);break;
 			case 'w':setKeyWPressed(false);break;
 			case 'd':setKeyDPressed(false);break;
-			case ' ':setKeySpacePressed(false);break;   
+			case 'f':setKeyFPressed(false);break;   
+
+			case 'h':setKeyHPressed(false);break;  
+			case 'j':setKeyJPressed(false);break;
+			case 'u':setKeyUPressed(false);break;
+			case 'k':setKeyKPressed(false);break;
+			case 'l':setKeyLPressed(false);break;  
+			
 		    default:
 		    	//System.out.println("Controller test:  Unknown key pressed");
 		        break;
@@ -102,13 +121,53 @@ public class Controller implements KeyListener {
 		KeyWPressed = keyWPressed;
 	}
 
-
-	public boolean isKeySpacePressed() {
-		return KeySpacePressed;
+	public boolean isKeyFPressed() {
+		return KeyFPressed;
 	}
 
-
-	public void setKeySpacePressed(boolean keySpacePressed) {
-		KeySpacePressed = keySpacePressed;
+	public void setKeyFPressed(boolean keyFPressed) {
+		KeyFPressed = keyFPressed;
 	}
+
+	//Second controller
+	public boolean isKeyUPressed() {
+		return KeyUPressed;
+	}
+
+	public void setKeyUPressed(boolean keyUPressed) {
+		KeyUPressed = keyUPressed;
+	}
+
+	public boolean isKeyHPressed() {
+		return KeyHPressed;
+	}
+
+	public void setKeyHPressed(boolean keyHPressed) {
+		KeyHPressed = keyHPressed;
+	}
+
+	public boolean isKeyJPressed() {
+		return KeyJPressed;
+	}
+
+	public void setKeyJPressed(boolean keyJPressed) {
+		KeyJPressed = keyJPressed;
+	}
+
+	public boolean isKeyKPressed() {
+		return KeyKPressed;
+	}
+
+	public void setKeyKPressed(boolean keyKPressed) {
+		KeyKPressed = keyKPressed;
+	}
+
+	public boolean isKeyLPressed() {
+		return KeyLPressed;
+	}
+
+	public void setKeyLPressed(boolean keyLPressed) {
+		KeyLPressed = keyLPressed;
+	}
+
 }

@@ -70,8 +70,9 @@ public class Viewer extends JPanel {
 		drawOrders(g);
 		
 		if (!Model.gameFinished){
-			//Player
+			//Players
 			drawAsset((int) gameworld.getPlayer().getCentre().getX(), (int) gameworld.getPlayer().getCentre().getY(),  100, 100, gameworld.getPlayer().getTexture(), g, 3, 32, 32);	
+			drawAsset((int) gameworld.getPlayer1().getCentre().getX(), (int) gameworld.getPlayer1().getCentre().getY(),  100, 100, gameworld.getPlayer1().getTexture(), g, 3, 32, 32);	
 			//Drop off
 			drawAsset((int) gameworld.getDeliveryDropOff().getCentre().getX(), (int) gameworld.getDeliveryDropOff().getCentre().getY(), 100, 100, gameworld.getDeliveryDropOff().getTexture(), g, 3, 100, 100);	
 		} else {

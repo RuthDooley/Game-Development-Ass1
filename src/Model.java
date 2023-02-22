@@ -12,7 +12,6 @@ import java.lang.Math;
  //For sound
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -23,20 +22,10 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 //Overall music from https://www.fesliyanstudios.com/royalty-free-music/downloads-c/8-bit-music/6  
 //Failure, coin, crumple, error, failure and victory sound effects from https://pixabay.com/sound-effects/search/failure/?manual_search=1&order=None 
 
-//Music
-import java.io.File;
-import java.io.IOException;
-import java.util.Scanner;
-  
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 public class Model {
 	
 	private static GameObject Player;
+	private static GameObject Player1;
 	private Controller controller = Controller.getInstance();
 	private static CopyOnWriteArrayList<GameObject> LettuceBinList  = new CopyOnWriteArrayList<GameObject>();	
 	private static CopyOnWriteArrayList<GameObject> LettuceList  = new CopyOnWriteArrayList<GameObject>();
@@ -72,6 +61,7 @@ public class Model {
 		switch(levelNumber) {
 			case 1:
 				Player = new GameObject("res/playerUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,400, "player"));
+				Player1 = new GameObject("res/player1Up.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,0, "player"));
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,300, "counter")));
 				BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,400, "bin")));
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,500, "counter")));
@@ -94,7 +84,7 @@ public class Model {
 				plateSpawnLocations.add(400500);
 
 				//This is the time for the level
-				timerStart = 5_000;
+				timerStart = 50_000;
 				orderTimeBeforeExpiry = 20_000;
 				deliveryList = 4;
 
@@ -244,6 +234,7 @@ public class Model {
 	public void gamelogic() throws InterruptedException, LineUnavailableException, IOException, UnsupportedAudioFileException {
 		plateSpawn();
 		playerLogic(); 
+		player1Logic(); 
 		timerLogic();
 		orderLogic();
 	}
@@ -299,6 +290,7 @@ public class Model {
 	}
 
 	public static int gridSpace;
+	public static int gridSpace1;
 	private void playerLogic() throws InterruptedException, LineUnavailableException, IOException, UnsupportedAudioFileException{
 		if(Controller.getInstance().isKeyAPressed()){
 			actionOnDirectionKeyStroke("left");
@@ -316,14 +308,53 @@ public class Model {
 			actionOnDirectionKeyStroke("down");
 		}
 		
-		if(Controller.getInstance().isKeySpacePressed()){
+		if(Controller.getInstance().isKeyFPressed()){
 			actionOnSpaceStroke();
 		}
 	}
 
+	private void player1Logic() throws InterruptedException, LineUnavailableException, IOException, UnsupportedAudioFileException{
+		if(Controller.getInstance().isKeyHPressed()){
+			actionOnDirectionKeyStroke1("left");
+		}		
+		
+		if(Controller.getInstance().isKeyKPressed()){
+			actionOnDirectionKeyStroke1("right");
+		}
+		
+		if(Controller.getInstance().isKeyJPressed()){
+			actionOnDirectionKeyStroke1("down");
+		}
+			
+		if(Controller.getInstance().isKeyUPressed()){
+			actionOnDirectionKeyStroke1("up");
+		}
+		
+		if(Controller.getInstance().isKeyLPressed()){
+			System.out.println("here5");
+			// actionOnSpaceStroke();
+		}
+	}
+
+	public static String directPlayerfacing = "up";
+	public static String directPlayer1facing = "up";
+	private void turningPlayer (String direction, int playerNum){
+		String location;
+		//direction = up, down, left right
+		if (playerNum == 0){
+			directPlayerfacing = direction;
+			location = "res/player" + direction.substring(0, 1).toUpperCase() + direction.substring(1) + ".png";
+			Player.setTextureLocation(location);
+		} else if (playerNum == 1){
+			directPlayer1facing = direction;
+			location = "res/player1" + direction.substring(0, 1).toUpperCase() + direction.substring(1) + ".png";
+			Player1.setTextureLocation(location);
+		}		
+	}
+
 	private void actionOnDirectionKeyStroke (String direction) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
 		//Turn the player
-		turningPlayer(direction);
+		turningPlayer(direction, 0);
 
 		//Get the position of the player
 		gridSpace = Point3f.getGridValue(Player.getCentre());
@@ -367,13 +398,72 @@ public class Model {
 					Player.getCentre().ApplyVector( new Vector3f(widthAndHeight,0,0));
 					break;
 				default:
-					System.out.println("Error Model.actionOnDirectionKeyStroke() 1.0");
+					System.out.println("Error Model.actionOnDirectionKeyStroke() 2.0");
 			}
 			
 			gridSpace = Point3f.getGridValue(Player.getCentre());
 			Point3f.addCollider(gridSpace);
 		} 
-		//Can add this in but I don't like how it runs
+		// Can add this in but I don't like how it runs
+		// else {
+		// 	//Invalid move
+		// 	musicPlayer("res/error.wav", false);
+		// }
+	}
+
+	private void actionOnDirectionKeyStroke1 (String direction) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+		//Turn the player
+		turningPlayer(direction, 1);
+
+		//Get the position of the player
+		gridSpace1 = Point3f.getGridValue(Player1.getCentre());
+
+		int spaceMoveInto = 0;
+		switch (direction){
+			case "up":
+				spaceMoveInto = gridSpace1 - 100;
+				break;
+			case "down":
+				spaceMoveInto = gridSpace1 + 100;
+				break;
+			case "left":
+				spaceMoveInto = gridSpace1 - 100_000;
+				break;
+			case "right":
+				spaceMoveInto = gridSpace1 + 100_000;
+				break;
+			default:
+				System.out.println("Error Model.actionOnDirectionKeyStroke1() 1.0");
+		}
+		
+		if (!Point3f.spacesOccupied.contains(spaceMoveInto)){
+			Point3f.removeCollider(gridSpace1);
+
+			switch (direction){
+				case "up":
+					Controller.getInstance().setKeyUPressed(false);	
+					Player1.getCentre().ApplyVector( new Vector3f(0,widthAndHeight,0));
+					break;
+				case "down":
+					Controller.getInstance().setKeyJPressed(false);	
+					Player1.getCentre().ApplyVector( new Vector3f(0,-widthAndHeight,0));
+					break;
+				case "left":
+					Controller.getInstance().setKeyHPressed(false);	
+					Player1.getCentre().ApplyVector( new Vector3f(-widthAndHeight,0,0));
+					break;
+				case "right":
+					Controller.getInstance().setKeyKPressed(false);	
+					Player1.getCentre().ApplyVector( new Vector3f(widthAndHeight,0,0));
+					break;
+				default:
+					System.out.println("Error Model.actionOnDirectionKeyStroke1() 2.0");
+			}
+			
+			gridSpace1 = Point3f.getGridValue(Player1.getCentre());
+			Point3f.addCollider(gridSpace1);
+		} 
+		// Can add this in but I don't like how it runs
 		// else {
 		// 	//Invalid move
 		// 	musicPlayer("res/error.wav", false);
@@ -502,7 +592,7 @@ public class Model {
 				}
 			}		
 		}			
-		Controller.getInstance().setKeySpacePressed(false);
+		Controller.getInstance().setKeyFPressed(false);
 	}
 
 	public static void checkOrderExists (int value) throws LineUnavailableException, IOException, UnsupportedAudioFileException, InterruptedException{
@@ -532,14 +622,6 @@ public class Model {
 		}
 	}
 
-	public static String directPlayerfacing = "up";
-	private void turningPlayer (String direction){
-		//direction = up, down, left right
-		directPlayerfacing = direction;
-		String location = "res/player" + direction.substring(0, 1).toUpperCase() + direction.substring(1) + ".png";
-		Player.setTextureLocation(location);
-	}
-
 	private int spaceInfrontOfPlayer (){
 		//Find the position of the player
 		gridSpace = Point3f.getGridValue(Player.getCentre());
@@ -567,6 +649,10 @@ public class Model {
 
 	public GameObject getPlayer() {
 		return Player;
+	}
+
+	public GameObject getPlayer1() {
+		return Player1;
 	}
 
 	public GameObject getDeliveryDropOff() {
