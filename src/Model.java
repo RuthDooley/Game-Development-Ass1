@@ -624,6 +624,7 @@ public class Model {
 
 	private int spaceInfrontOfPlayer (){
 		//Find the position of the player
+		int gridSpace;
 		gridSpace = Point3f.getGridValue(Player.getCentre());
 
 		//Adjust to find the space infront of them
