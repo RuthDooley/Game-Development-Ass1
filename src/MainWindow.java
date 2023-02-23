@@ -50,7 +50,7 @@ public class MainWindow {
 	}
 
 	private static void gameloop(int levelNumberSelected) throws InterruptedException, UnsupportedAudioFileException, IOException, LineUnavailableException { 
-
+		Model.Score = 0;
 		if (levelNum == 4){
 			//Game end
 			System.exit(0);
@@ -81,9 +81,6 @@ public class MainWindow {
 					Model.musicPlayer("res/failure.wav", false);
 				}
 				Thread.sleep(5_000);
-
-				Model.Score = 0;
-				
 				break;
 			}
 		}

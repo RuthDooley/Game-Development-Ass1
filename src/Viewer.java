@@ -158,8 +158,8 @@ public class Viewer extends JPanel {
 					g.setColor(Color.decode("#ebc17f"));
 					g.fillRect(j * Model.widthAndHeight,i * Model.widthAndHeight, Model.widthAndHeight, Model.widthAndHeight);
 				}
-				// g.setColor(Color.BLACK);
-				// g.drawString("[ " + j + " , " + i + " ]", (j * Model.widthAndHeight) + 25, (i * Model.widthAndHeight) + 25);
+				g.setColor(Color.BLACK);
+				g.drawString("[ " + j + " , " + i + " ]", (j * Model.widthAndHeight) + 25, (i * Model.widthAndHeight) + 25);
 			}
 		}
 	}

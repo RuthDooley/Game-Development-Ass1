@@ -40,7 +40,6 @@ public class Model {
 	private static GameObject deliveryDropOff;
 	private static int numberOfPlatesLevel;
 	public static ArrayList<Integer> plateSpawnLocations  = new ArrayList<Integer>();
-	// public static CopyOnWriteArrayList<GameObject> OrderList  = new CopyOnWriteArrayList<GameObject>();
 
 	public static int Score=0; 
 	public static int Timer=0; 
@@ -60,41 +59,51 @@ public class Model {
 		gameFinished = false;
 		switch(levelNumber) {
 			case 1:
-				Player = new GameObject("res/playerUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,400, "player"));
-				Player1 = new GameObject("res/player1Up.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(0,0, "player"));
-				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,300, "counter")));
-				BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,400, "bin")));
-				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,500, "counter")));
+				Player = new GameObject("res/playerUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,500, "player"));
+				Player1 = new GameObject("res/player1Up.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(700,300, "player"));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,400, "counter")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,500, "counter")));;
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,600, "counter")));
 				
-				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(400,500, "counter")));
-				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(500,500, "counter")));
-				CucumberBinList.add(new GameObject("res/cucumberBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "cucumberBin")));
-				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,500, "counter")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(400,600, "counter")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(500,600, "counter")));
+				CucumberBinList.add(new GameObject("res/cucumberBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,600, "cucumberBin")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,600, "counter")));
 
-				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,500, "counter")));
-				TomatoBinList.add(new GameObject("res/tomatoBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,400, "tomatoBin")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,600, "counter")));
+				TomatoBinList.add(new GameObject("res/tomatoBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,500, "tomatoBin")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,400, "counter")));
+
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(400,400, "counter")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(500,400, "counter")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,400, "counter")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,400, "counter")));
+
+				BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,300, "bin")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,200, "counter")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(400,200, "counter")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(500,200, "counter")));
+				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,200, "lettuceBin")));
+				deliveryDropOff = new GameObject("res/deliveryZone.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(700,200, "dropoff"));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,200, "counter")));
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,300, "counter")));
 
-				deliveryDropOff = new GameObject("res/deliveryZone.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,300, "dropoff"));
-				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(500,300, "counter")));
-				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,300, "lettuceBin")));
-				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,300, "counter")));
-
 				numberOfPlatesLevel = 1;
-				plateSpawnLocations.add(400500);
+				plateSpawnLocations.add(400600);
 
 				//This is the time for the level
-				timerStart = 50_000;
+				timerStart = 120_000;
 				orderTimeBeforeExpiry = 20_000;
 				deliveryList = 4;
 
 				//This dictates how many stars you get for each level
-				scoreStars[0] = -1;
+				scoreStars[0] = 100;
 				scoreStars[1] = 200;
 				scoreStars[2] = 300;
 				break;
 			case 2:
 				Player = new GameObject("res/playerUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,400, "player"));
+				Player1 = new GameObject("res/player1Up.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(700,400, "player"));
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,200, "counter")));
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,300, "counter")));
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,400, "counter")));
@@ -127,9 +136,10 @@ public class Model {
 
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(200,400, "counter")));
 				CucumberBinList.add(new GameObject("res/cucumberBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,400, "cucumberBin")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(500,300, "counter")));
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(500,400, "counter")));
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,400, "counter")));
-				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,400, "counter")));
+				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(600,500, "counter")));
 				CounterList.add(new GameObject("res/counter.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,400, "counter")));
 				BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(900,400, "bin")));
 
@@ -137,17 +147,18 @@ public class Model {
 				plateSpawnLocations.add(100500);
 
 				//This is the time for the level
-				timerStart = 2_000;
+				timerStart = 120_000;
 				orderTimeBeforeExpiry = 25_000;
 				deliveryList = 7;
 
 				//This dictates how many stars you get for each level
-				scoreStars[0] = -1;
-				scoreStars[1] = 175;
+				scoreStars[0] = 100;
+				scoreStars[1] = 200;
 				scoreStars[2] = 250;
 				break;
 			case 3:
 				Player = new GameObject("res/playerUp.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(400,400, "player"));
+				Player1 = new GameObject("res/player1Up.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(700,400, "player"));
 				deliveryDropOff = new GameObject("res/deliveryZone.png",widthAndHeight,widthAndHeight, Point3f.setPointInit(1000,100, "dropoff"));
 				LettuceBinList.add(new GameObject("res/lettuceBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,100, "lettuceBin")));
 				TomatoBinList.add(new GameObject("res/tomatoBin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(100,700, "tomatoBin")));
@@ -181,13 +192,13 @@ public class Model {
 
 				
 				//This is the time for the level
-				timerStart = 2_000;
+				timerStart = 120_000;
 				orderTimeBeforeExpiry = 30_000;
 				deliveryList = 7;
 
 				//This dictates how many stars you get for each level
-				scoreStars[0] = -1;
-				scoreStars[1] = 175;
+				scoreStars[0] = 100;
+				scoreStars[1] = 200;
 				scoreStars[2] = 250;
 				break;
 			default:
