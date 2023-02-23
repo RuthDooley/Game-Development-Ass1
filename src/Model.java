@@ -22,6 +22,31 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 //Overall music from https://www.fesliyanstudios.com/royalty-free-music/downloads-c/8-bit-music/6  
 //Failure, coin, crumple, error, failure and victory sound effects from https://pixabay.com/sound-effects/search/failure/?manual_search=1&order=None 
 
+/*
+ * Created by Abraham Campbell on 15/01/2020.
+ *   Copyright (c) 2020  Abraham Campbell
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+   
+   (MIT LICENSE ) e.g do what you want with this :-) 
+ */ 
+
 public class Model {
 	
 	private static GameObject Player;
@@ -92,12 +117,12 @@ public class Model {
 				plateSpawnLocations.add(400600);
 
 				//This is the time for the level
-				timerStart = 120_000;
+				timerStart = 5_000;
 				orderTimeBeforeExpiry = 20_000;
 				deliveryList = 4;
 
 				//This dictates how many stars you get for each level
-				scoreStars[0] = 100;
+				scoreStars[0] = -100;
 				scoreStars[1] = 200;
 				scoreStars[2] = 300;
 				break;
@@ -147,12 +172,12 @@ public class Model {
 				plateSpawnLocations.add(100500);
 
 				//This is the time for the level
-				timerStart = 120_000;
+				timerStart = 5_000;
 				orderTimeBeforeExpiry = 25_000;
 				deliveryList = 7;
 
 				//This dictates how many stars you get for each level
-				scoreStars[0] = 100;
+				scoreStars[0] = -100;
 				scoreStars[1] = 200;
 				scoreStars[2] = 250;
 				break;
@@ -528,19 +553,19 @@ public class Model {
 			//and theyre infront of the delivery zone
 			else if (gridSpace/1000 == deliveryDropOff.getCentre().getX() && gridSpace % 1_000 == deliveryDropOff.getCentre().getY()){
 				if (objectPlayerHolding.contains("lettuce") && objectPlayerHolding.contains("tomato") && objectPlayerHolding.contains("cucumber") && objectPlayerHolding.contains("plate")){
-					checkOrderExists(6);
+					checkOrderExists(6, 0);
 				} else if (objectPlayerHolding.contains("lettuce") && objectPlayerHolding.contains("tomato") && !objectPlayerHolding.contains("cucumber") && objectPlayerHolding.contains("plate")) {
-					checkOrderExists(3);
+					checkOrderExists(3, 0);
 				} else if (objectPlayerHolding.contains("lettuce") && !objectPlayerHolding.contains("tomato") && objectPlayerHolding.contains("cucumber") && objectPlayerHolding.contains("plate")) {
-					checkOrderExists(4);
+					checkOrderExists(4, 0);
 				} else if (!objectPlayerHolding.contains("lettuce") && objectPlayerHolding.contains("tomato") && objectPlayerHolding.contains("cucumber") && objectPlayerHolding.contains("plate")) {
-					checkOrderExists(5);
+					checkOrderExists(5, 0);
 				} else if (objectPlayerHolding.contains("lettuce") &&  objectPlayerHolding.contains("plate")) {
-					checkOrderExists(0);
+					checkOrderExists(0, 0);
 				} else if (objectPlayerHolding.contains("tomato") &&  objectPlayerHolding.contains("plate")) {
-					checkOrderExists(1);
+					checkOrderExists(1, 0);
 				} else if (objectPlayerHolding.contains("cucumber") &&  objectPlayerHolding.contains("plate")) {
-					checkOrderExists(2);
+					checkOrderExists(2, 0);
 				} else {
 					System.out.println("invalid order");
 				}
@@ -653,19 +678,19 @@ public class Model {
 			//and theyre infront of the delivery zone
 			else if (gridSpace1/1000 == deliveryDropOff.getCentre().getX() && gridSpace1 % 1_000 == deliveryDropOff.getCentre().getY()){
 				if (objectPlayer1Holding.contains("lettuce") && objectPlayer1Holding.contains("tomato") && objectPlayer1Holding.contains("cucumber") && objectPlayer1Holding.contains("plate")){
-					checkOrderExists(6);
+					checkOrderExists(6, 1);
 				} else if (objectPlayer1Holding.contains("lettuce") && objectPlayer1Holding.contains("tomato") && !objectPlayer1Holding.contains("cucumber") && objectPlayer1Holding.contains("plate")) {
-					checkOrderExists(3);
+					checkOrderExists(3, 1);
 				} else if (objectPlayer1Holding.contains("lettuce") && !objectPlayer1Holding.contains("tomato") && objectPlayer1Holding.contains("cucumber") && objectPlayer1Holding.contains("plate")) {
-					checkOrderExists(4);
+					checkOrderExists(4, 1);
 				} else if (!objectPlayer1Holding.contains("lettuce") && objectPlayer1Holding.contains("tomato") && objectPlayer1Holding.contains("cucumber") && objectPlayer1Holding.contains("plate")) {
-					checkOrderExists(5);
+					checkOrderExists(5, 1);
 				} else if (objectPlayer1Holding.contains("lettuce") &&  objectPlayer1Holding.contains("plate")) {
-					checkOrderExists(0);
+					checkOrderExists(0, 1);
 				} else if (objectPlayer1Holding.contains("tomato") &&  objectPlayer1Holding.contains("plate")) {
-					checkOrderExists(1);
+					checkOrderExists(1, 1);
 				} else if (objectPlayer1Holding.contains("cucumber") &&  objectPlayer1Holding.contains("plate")) {
-					checkOrderExists(2);
+					checkOrderExists(2, 1);
 				} else {
 					System.out.println("invalid order");
 				}
@@ -735,9 +760,12 @@ public class Model {
 		Controller.getInstance().setKeyLPressed(false);
 	}
 
-	public static void checkOrderExists (int value) throws LineUnavailableException, IOException, UnsupportedAudioFileException, InterruptedException{
+	public static void checkOrderExists (int value, int playerNum) throws LineUnavailableException, IOException, UnsupportedAudioFileException, InterruptedException{
 		if (OrderNameList.contains(value)){
-			objectPlayerHolding.clear();
+			if (playerNum == 0)
+				objectPlayerHolding.clear();
+			else 
+				objectPlayer1Holding.clear();
 
 			//Scoring system
 			if (value == 6) {

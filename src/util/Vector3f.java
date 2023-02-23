@@ -23,6 +23,7 @@ SOFTWARE.
    
    (MIT LICENSE ) e.g do what you want with this :-) 
  */ 
+
 //Modified from Graphics 3033J course point class  by Abey Campbell 
 public class Vector3f {
 
@@ -129,48 +130,3 @@ public class Vector3f {
 	}
  
 }
-	 
-	   
-
-/*
-
-										MMMM                                        
-										MMMMMM                                      
- 										MM MMMM                                    
- 										MMI  MMMM                                  
- 										MMM    MMMM                                
- 										MMM      MMMM                              
-  										MM        MMMMM                           
-  										MMM         MMMMM                         
-  										MMM           OMMMM                       
-   										MM             .MMMM                     
-MMMMMMMMMMMMMMM                        MMM              .MMMM                   
-MM   IMMMMMMMMMMMMMMMMMMMMMMMM         MMM                 MMMM                 
-MM                  ~MMMMMMMMMMMMMMMMMMMMM                   MMMM               
-MM                                  OMMMMM                     MMMMM            
-MM                                                               MMMMM          
-MM                                                                 MMMMM        
-MM                                                                   ~MMMM      
-MM                                                                     =MMMM    
-MM                                                                        MMMM  
-MM                                                                       MMMMMM 
-MM                                                                     MMMMMMMM 
-MM                                                                  :MMMMMMMM   
-MM                                                                MMMMMMMMM     
-MM                                                              MMMMMMMMM       
-MM                             ,MMMMMMMMMM                    MMMMMMMMM         
-MM              IMMMMMMMMMMMMMMMMMMMMMMMMM                  MMMMMMMM            
-MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM               ZMMMMMMMM              
-MMMMMMMMMMMMMMMMMMMMMMMMMMMMM          MM$             MMMMMMMMM                
-MMMMMMMMMMMMMM                       MMM            MMMMMMMMM                  
-  									MMM          MMMMMMMM                     
-  									MM~       IMMMMMMMM                       
-  									MM      DMMMMMMMM                         
- 								MMM    MMMMMMMMM                           
- 								MMD  MMMMMMMM                              
-								MMM MMMMMMMM                                
-								MMMMMMMMMM                                  
-								MMMMMMMM                                    
-  								MMMM                                      
-  								MM                                        
-                             GlassGiant.com */
