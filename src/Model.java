@@ -242,6 +242,8 @@ public class Model {
 		BinList.clear();
 		CounterList.clear();
 		PlateList.clear();
+		HoleList.clear();
+
 		// deliveryDropOff = null;
 
 		Point3f.spacesOccupied.clear();
