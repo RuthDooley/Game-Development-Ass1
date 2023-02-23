@@ -67,7 +67,8 @@ public class Viewer extends JPanel {
 
 		drawTimer(g);
 
-		drawOrders(g);
+		if (Model.OrderNameList.size() > 0)
+			drawOrders(g);
 		
 		if (!Model.gameFinished){
 			//Players
