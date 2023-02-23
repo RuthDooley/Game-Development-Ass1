@@ -44,7 +44,7 @@ public class MainWindow {
 	private static int TargetFPS = 100;
 	public static boolean startGame = false; 
 	public static int startTime = 0;
-	public static int levelNum = 1;
+	public static int levelNum = 3;
 
 	private static Boolean terminatGame = false;
 	public static void main(String[] args) throws InterruptedException, UnsupportedAudioFileException, IOException, LineUnavailableException {

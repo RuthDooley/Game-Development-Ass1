@@ -117,12 +117,12 @@ public class Model {
 				plateSpawnLocations.add(400600);
 
 				//This is the time for the level
-				timerStart = 5_000;
+				timerStart = 120_000;
 				orderTimeBeforeExpiry = 20_000;
 				deliveryList = 4;
 
 				//This dictates how many stars you get for each level
-				scoreStars[0] = -100;
+				scoreStars[0] = 100;
 				scoreStars[1] = 200;
 				scoreStars[2] = 300;
 				break;
@@ -172,7 +172,7 @@ public class Model {
 				plateSpawnLocations.add(100500);
 
 				//This is the time for the level
-				timerStart = 5_000;
+				timerStart = 120_000;
 				orderTimeBeforeExpiry = 25_000;
 				deliveryList = 7;
 
@@ -197,23 +197,23 @@ public class Model {
 				BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(200,500, "bin")));
 				BinList.add(new GameObject("res/bin.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(900,300, "bin")));
 
-				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(200,300, "counter")));
-				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(200,400, "counter")));
+				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(200,300, "hole")));
+				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(200,400, "hole")));
 				// HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(200,500, "counter")));
 
-				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,600, "counter")));
-				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(400,600, "counter")));
-				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,600, "counter")));
-				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,600, "counter")));
+				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,600, "hole")));
+				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(400,600, "hole")));
+				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,600, "hole")));
+				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,600, "hole")));
 
 				// HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(900,300, "counter")));
-				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(900,400, "counter")));
-				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(900,500, "counter")));
+				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(900,400, "hole")));
+				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(900,500, "hole")));
 
-				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,200, "counter")));
-				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(400,200, "counter")));
-				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,200, "counter")));
-				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,200, "counter")));
+				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(300,200, "hole")));
+				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(400,200, "hole")));
+				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(700,200, "hole")));
+				HoleList.add(new GameObject("res/hole.png", widthAndHeight, widthAndHeight, Point3f.setPointInit(800,200, "hole")));
 
 				
 				//This is the time for the level
